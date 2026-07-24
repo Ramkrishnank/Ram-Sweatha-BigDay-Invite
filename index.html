@@ -664,8 +664,6 @@ async function submitRSVP(choice){
         நன்றி · உங்கள் வருகைக்காக காத்திருக்கிறோம் 🙏
       </small>`;
     launchConfetti();
-    const waTxt=encodeURIComponent(`✅ *RSVP Confirmed!*\n\nName: ${name}\nGuests: ${guests||'1'}\nEvents: ${events||'Wedding'}\nPhone: ${phone||'-'}\n\nI will attend *Ramakrishnan & Sweatha's* Big Day! 🎊🌺`);
-    setTimeout(()=>window.open(`https://wa.me/${WA_NUMBER}?text=${waTxt}`,'_blank'),1600);
   } else {
     done.innerHTML=`💐 We understand, ${name}.<br>Thank you for letting us know.<br>
       <small style="color:#aaa;font-family:'Noto Serif Tamil',serif;font-size:.85rem;display:block;margin-top:10px">
