@@ -1,633 +1,731 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tamil Wedding Invitation – Ramakrishnan & Sweatha</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+Tamil:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>💍 Ramakrishnan & Sweatha — Big Day Invite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+Tamil:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --gold: #c9a84c;
-      --dark-gold: #9a6f00;
-      --maroon: #7b1c2e;
-      --cream: #fdf6e3;
-      --saffron: #f4a328;
-      --light-gold: #f5e6b3;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      background:#1a0a00;
-      display:flex; justify-content:center; align-items:center;
-      min-height:100vh;
-      font-family:'Playfair Display',serif;
-      overflow-x:hidden;
+    :root{--gold:#c9a84c;--dk-gold:#9a6f00;--lt-gold:#f5e6b3;--maroon:#7b1c2e;--deep:#4a0e1c;--cream:#fdf6e3;--saffron:#f4a328;--grn:#1a4a2e;--dark:#0d0500;}
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:var(--dark);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+
+    /* ── Confetti ── */
+    #confetti-canvas{position:fixed;inset:0;z-index:999;pointer-events:none;display:none;}
+
+    /* ── Floating petals ── */
+    #petals{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+    .petal{position:absolute;opacity:0;font-size:14px;animation:petalFall linear infinite;}
+    @keyframes petalFall{
+      0%{transform:translateY(-30px) rotate(0deg);opacity:0}
+      5%{opacity:1}85%{opacity:.7}
+      100%{transform:translateY(105vh) rotate(720deg) translateX(50px);opacity:0}
     }
 
-    /* ─ Particles ─ */
-    .particles { position:fixed; inset:0; pointer-events:none; z-index:0; }
-    .particle {
-      position:absolute; border-radius:50% 0 50% 0;
-      animation:floatUp linear infinite; opacity:0;
-    }
-    @keyframes floatUp {
-      0%   { transform:translateY(100vh) rotate(0deg); opacity:0; }
-      10%  { opacity:1; }
-      90%  { opacity:.8; }
-      100% { transform:translateY(-10vh) rotate(360deg); opacity:0; }
-    }
+    /* ── Hidden YT player ── */
+    #yt-player{position:fixed;bottom:-300px;left:-300px;width:1px;height:1px;}
 
-    /* ─ Envelope ─ */
-    #envelope-overlay {
-      position:fixed; inset:0; z-index:100;
-      background:radial-gradient(ellipse at center,#3d1a00,#1a0800);
-      display:flex; flex-direction:column;
-      justify-content:center; align-items:center;
-      cursor:pointer;
+    /* ══ ENVELOPE SCREEN ══ */
+    #env-screen{
+      position:fixed;inset:0;z-index:500;
+      background:radial-gradient(ellipse at 30% 40%,#3d1500 0%,#1a0800 55%,#000 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      cursor:pointer;transition:transform 1s cubic-bezier(.77,0,.175,1),opacity 1s ease;
     }
-    .env-wrap {
-      width:280px; height:200px;
-      filter:drop-shadow(0 0 30px rgba(201,168,76,.6));
-      animation:envFloat 2s ease-in-out infinite;
-    }
-    @keyframes envFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-    .tap-text {
-      margin-top:30px; color:var(--gold);
-      font-family:'Dancing Script',cursive; font-size:1.5rem;
-      animation:pulse 1.5s ease-in-out infinite; text-align:center;
-    }
-    .tamil-tap { color:#f5e6b3; font-family:'Noto Serif Tamil',serif; font-size:1rem; margin-top:6px; opacity:.8; text-align:center; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.05)} }
+    #env-screen.open{transform:scale(4);opacity:0;pointer-events:none;}
+    .env-star{position:absolute;color:var(--gold);animation:twinkle 2s ease-in-out infinite;}
+    @keyframes twinkle{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+    .env-wrap{animation:envBob 2.5s ease-in-out infinite;}
+    @keyframes envBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+    .env-svg{width:320px;height:230px;filter:drop-shadow(0 12px 40px rgba(201,168,76,.55));}
+    .env-cta{margin-top:30px;text-align:center;}
+    .env-cta .en{display:block;font-family:'Dancing Script',cursive;font-size:1.9rem;color:var(--gold);animation:glowPulse 2s ease-in-out infinite;}
+    .env-cta .ta{display:block;font-family:'Noto Serif Tamil',serif;font-size:1rem;color:rgba(245,230,179,.7);margin-top:6px;}
+    @keyframes glowPulse{0%,100%{opacity:1;text-shadow:0 0 10px rgba(201,168,76,.5)}50%{opacity:.6;text-shadow:0 0 25px rgba(201,168,76,1)}}
 
-    /* ─ Card ─ */
-    #card {
-      position:relative; z-index:10;
-      width:100%; max-width:480px;
-      background:var(--cream);
+    /* ══ CARD ══ */
+    #card{display:none;position:relative;z-index:10;width:100%;max-width:500px;margin:0 auto;background:var(--cream);box-shadow:0 0 100px rgba(201,168,76,.25);}
+    #card.show{display:block;animation:cardIn 1.2s cubic-bezier(.23,1,.32,1) forwards;}
+    @keyframes cardIn{from{opacity:0;transform:translateY(60px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+    /* scroll reveal */
+    .rv{opacity:0;transform:translateY(35px);transition:opacity .9s ease,transform .9s ease;}
+    .rv.in{opacity:1;transform:translateY(0);}
+
+    /* ── Borders ── */
+    .stripe{height:16px;background:repeating-linear-gradient(90deg,var(--gold) 0,var(--dk-gold) 8px,var(--saffron) 16px,var(--dk-gold) 24px,var(--gold) 32px,var(--lt-gold) 42px,var(--gold) 50px);}
+
+    /* ── Header ── */
+    .hdr{
+      position:relative;
+      background:linear-gradient(160deg,var(--deep) 0%,var(--maroon) 40%,#6b1525 70%,var(--deep) 100%);
+      padding:28px 20px 18px;text-align:center;overflow:hidden;
+    }
+    .hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 50%,rgba(201,168,76,.1) 0%,transparent 50%),radial-gradient(circle at 85% 50%,rgba(201,168,76,.1) 0%,transparent 50%);}
+    .diya-row{display:flex;justify-content:center;gap:18px;margin-bottom:10px;}
+    .diya{font-size:1.7rem;animation:flicker 1.6s ease-in-out infinite;}
+    .diya:nth-child(2){animation-delay:.3s}.diya:nth-child(3){animation-delay:.6s}
+    @keyframes flicker{0%,100%{transform:scale(1);filter:brightness(1)}30%{transform:scale(1.12) rotate(-4deg);filter:brightness(1.4)}65%{transform:scale(.94) rotate(3deg);filter:brightness(.85)}}
+    .kolam-svg{width:100%;height:65px;opacity:.55;margin:6px 0 10px;}
+    .kolam-path{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 3.5s ease forwards;}
+    @keyframes draw{to{stroke-dashoffset:0}}
+    .hdr-om{font-size:3rem;color:var(--gold);display:block;margin:4px 0;text-shadow:0 0 30px rgba(201,168,76,.9);animation:omGlow 2s ease-in-out infinite;}
+    @keyframes omGlow{0%,100%{text-shadow:0 0 20px rgba(201,168,76,.8)}50%{text-shadow:0 0 60px rgba(201,168,76,1),0 0 80px rgba(244,163,40,.4)}}
+    .hdr-title{font-family:'Noto Serif Tamil',serif;color:var(--lt-gold);font-size:1.1rem;letter-spacing:4px;margin-bottom:4px;}
+    .hdr-sub{color:rgba(245,230,179,.55);font-size:.65rem;letter-spacing:3px;text-transform:uppercase;}
+    /* Garland animation */
+    .garland{font-size:1.3rem;display:flex;justify-content:center;gap:4px;margin-top:10px;overflow:hidden;}
+    .garland span{animation:garlandWave 1s ease-in-out infinite;}
+    .garland span:nth-child(1){animation-delay:0s}.garland span:nth-child(2){animation-delay:.1s}
+    .garland span:nth-child(3){animation-delay:.2s}.garland span:nth-child(4){animation-delay:.3s}
+    .garland span:nth-child(5){animation-delay:.4s}.garland span:nth-child(6){animation-delay:.5s}
+    .garland span:nth-child(7){animation-delay:.4s}.garland span:nth-child(8){animation-delay:.3s}
+    .garland span:nth-child(9){animation-delay:.2s}.garland span:nth-child(10){animation-delay:.1s}
+    @keyframes garlandWave{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+    /* ── Dividers ── */
+    .div{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;background:var(--cream);}
+    .div::before,.div::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+    .div span{color:var(--gold);font-size:1.1rem;}
+
+    /* ── Couple ── */
+    .couple{background:var(--cream);padding:28px 20px 24px;text-align:center;position:relative;}
+    .couple::before,.couple::after{content:'— ✦ ❧ ✦ —';position:absolute;left:50%;transform:translateX(-50%);color:var(--gold);font-size:.7rem;letter-spacing:6px;opacity:.5;}
+    .couple::before{top:8px}.couple::after{bottom:8px}
+    .prelude{color:var(--maroon);font-size:.72rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;}
+    .intro{color:#5a3a00;font-size:1rem;font-style:italic;line-height:1.7;margin-bottom:22px;}
+    .photos-row{display:flex;align-items:center;justify-content:center;gap:14px;margin:8px 0;}
+    .frame{
+      width:115px;height:115px;border-radius:50%;
       border:3px solid var(--gold);
-      box-shadow:0 0 60px rgba(201,168,76,.4);
-      overflow:hidden; display:none;
+      background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.25));
+      display:flex;align-items:center;justify-content:center;font-size:2.8rem;
+      box-shadow:0 0 25px rgba(201,168,76,.3),inset 0 0 15px rgba(201,168,76,.05);
+      transition:transform .3s;position:relative;
     }
-    #card.visible { display:block; animation:cardReveal 1s ease forwards; }
-    @keyframes cardReveal { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+    .frame:hover{transform:scale(1.07);}
+    .frame::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1.5px dashed rgba(201,168,76,.35);animation:spin 12s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .g-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;color:var(--maroon);line-height:1.1;margin-top:10px;}
+    .b-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;color:var(--dk-gold);line-height:1.1;margin-top:10px;}
+    .n-tamil{font-family:'Noto Serif Tamil',serif;font-size:.9rem;color:#888;margin:3px 0;}
+    .n-parents{font-size:.75rem;color:#aaa;font-style:italic;margin-top:3px;line-height:1.5;}
+    .and-col{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 8px;}
+    .and-sym{font-family:'Dancing Script',cursive;font-size:4.2rem;color:var(--gold);line-height:1;text-shadow:0 2px 15px rgba(201,168,76,.4);animation:heartPulse 1.8s ease-in-out infinite;}
+    @keyframes heartPulse{0%,100%{transform:scale(1)}25%{transform:scale(1.18)}60%{transform:scale(.97)}}
+    .weds-txt{color:var(--gold);font-size:.62rem;letter-spacing:4px;text-transform:uppercase;}
 
-    .gold-border {
-      height:14px;
-      background:repeating-linear-gradient(90deg,var(--gold) 0px,var(--dark-gold) 10px,var(--saffron) 20px,var(--dark-gold) 30px,var(--gold) 40px);
-    }
+    /* ── Event Cards ── */
+    .cards-wrap{background:var(--cream);padding:4px 14px 14px;}
+    .ev-card{border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 8px 30px rgba(0,0,0,.12);transition:transform .3s;}
+    .ev-card:hover{transform:translateY(-5px);}
+    .ev-hdr{padding:14px 18px;display:flex;align-items:center;gap:12px;}
+    .ev-hdr .ic{font-size:2rem;}
+    .ev-hdr .et{font-family:'Cinzel Decorative',cursive;font-size:.95rem;color:#fff;letter-spacing:1px;}
+    .ev-hdr .es{font-family:'Noto Serif Tamil',serif;font-size:.72rem;color:rgba(255,255,255,.65);margin-top:2px;}
+    .ev-body{padding:16px 18px;background:rgba(255,255,255,.97);}
+    .dr{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px dashed rgba(201,168,76,.18);}
+    .dr:last-of-type{border-bottom:none;}
+    .dr .di{font-size:1.2rem;margin-top:2px;flex-shrink:0;}
+    .dr .dl{font-size:.58rem;color:#aaa;letter-spacing:2px;text-transform:uppercase;}
+    .dr .dv{font-size:.95rem;color:#222;font-weight:600;margin-top:2px;}
+    .dr .dt{font-family:'Noto Serif Tamil',serif;font-size:.72rem;color:#888;margin-top:1px;}
+    .muh{background:linear-gradient(135deg,rgba(201,168,76,.08),rgba(244,163,40,.1));border:1.5px solid rgba(201,168,76,.45);border-radius:10px;padding:12px;text-align:center;margin:10px 0 4px;}
+    .ml{font-family:'Noto Serif Tamil',serif;color:var(--dk-gold);font-size:.85rem;}
+    .mt{font-family:'Cinzel Decorative',cursive;font-size:1.5rem;color:var(--maroon);margin:4px 0;}
+    .mn{font-size:.68rem;color:#999;font-style:italic;}
+    .map-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;margin-top:10px;border:none;border-radius:10px;font-size:.85rem;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .3s,box-shadow .3s;}
+    .map-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2);}
 
-    /* ─ Header ─ */
-    .kolam-header {
-      background:linear-gradient(135deg,var(--maroon),#5a0f1e 50%,var(--maroon));
-      padding:20px 16px 10px; text-align:center;
+    /* ── Countdown ── */
+    .cd-wrap{
+      background:linear-gradient(160deg,var(--deep),var(--maroon),#3d0a14);
+      padding:32px 20px;text-align:center;position:relative;overflow:hidden;
     }
-    .kolam-svg { width:100%; height:70px; opacity:.55; }
-    .om-symbol {
-      font-size:2.2rem; color:var(--gold); display:block; margin-bottom:4px;
-      animation:glowPulse 2s ease-in-out infinite;
-    }
-    @keyframes glowPulse {
-      0%,100%{text-shadow:0 0 20px rgba(201,168,76,.8)}
-      50%{text-shadow:0 0 40px rgba(201,168,76,1),0 0 60px rgba(244,163,40,.5)}
-    }
-    .tamil-blessing { font-family:'Noto Serif Tamil',serif; color:var(--light-gold); font-size:1rem; letter-spacing:2px; margin-bottom:8px; }
+    .cd-wrap::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='35' fill='none' stroke='rgba(201,168,76,0.06)' stroke-width='1'/%3E%3Ccircle cx='40' cy='40' r='20' fill='none' stroke='rgba(201,168,76,0.04)' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E") repeat;}
+    .cd-title{font-family:'Noto Serif Tamil',serif;color:var(--lt-gold);font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:22px;position:relative;}
+    .cd-boxes{display:flex;justify-content:center;gap:8px;position:relative;align-items:center;}
+    .cd-box{background:rgba(0,0,0,.35);border:2px solid var(--gold);border-radius:14px;padding:14px 10px;min-width:72px;box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.07);}
+    .cd-n{font-family:'Cinzel Decorative',cursive;font-size:2rem;color:var(--gold);display:block;line-height:1;}
+    .cd-l{font-size:.52rem;color:#bbb;letter-spacing:2px;text-transform:uppercase;margin-top:5px;display:block;}
+    .cd-c{font-family:'Cinzel Decorative',cursive;font-size:2rem;color:var(--gold);animation:blink 1s step-end infinite;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-    .flower-divider {
-      display:flex; align-items:center; justify-content:center;
-      gap:8px; padding:10px 0;
-    }
-    .flower-divider::before,.flower-divider::after {
-      content:''; flex:1; height:1px;
-      background:linear-gradient(to right,transparent,var(--gold),transparent);
-    }
+    /* ── Timeline ── */
+    .tl-wrap{background:var(--cream);padding:24px 18px;}
+    .sec-title{font-family:'Cinzel Decorative',cursive;color:var(--maroon);text-align:center;font-size:.9rem;letter-spacing:2px;margin-bottom:20px;}
+    .tl-item{display:flex;gap:14px;padding:10px 8px;border-radius:10px;cursor:pointer;transition:background .2s;position:relative;}
+    .tl-item:hover{background:rgba(201,168,76,.06);}
+    .tl-item:not(:last-child)::after{content:'';position:absolute;left:27px;top:50px;bottom:-10px;width:2px;background:linear-gradient(to bottom,rgba(201,168,76,.5),transparent);pointer-events:none;}
+    .tl-dot{width:40px;height:40px;flex-shrink:0;background:linear-gradient(135deg,var(--gold),var(--saffron));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 3px 12px rgba(201,168,76,.4);}
+    .tl-body{flex:1;}
+    .tl-n{color:var(--maroon);font-weight:600;font-size:.92rem;}
+    .tl-ta{font-family:'Noto Serif Tamil',serif;color:#999;font-size:.72rem;}
+    .tl-t{color:var(--dk-gold);font-size:.72rem;margin-top:2px;}
+    .tl-d{color:#777;font-size:.75rem;font-style:italic;line-height:1.6;margin-top:6px;display:none;background:rgba(201,168,76,.06);padding:8px 10px;border-radius:6px;border-left:2px solid var(--gold);}
+    .tl-item.open .tl-d{display:block;}
+    .tl-arr{color:var(--gold);font-size:.65rem;margin-top:3px;transition:transform .3s;}
+    .tl-item.open .tl-arr{transform:rotate(180deg);}
 
-    .card-body { padding:0 24px; background:var(--cream); }
+    /* ── RSVP ── */
+    .rsvp-wrap{background:linear-gradient(160deg,#0d0500 0%,#1a0800 50%,#2a0d00 100%);padding:32px 22px;}
+    .rsvp-title{font-family:'Cinzel Decorative',cursive;color:var(--gold);font-size:1.1rem;text-align:center;margin-bottom:6px;}
+    .rsvp-sub{color:#999;font-size:.78rem;text-align:center;margin-bottom:6px;font-style:italic;}
+    .sheets-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(52,168,83,.15);border:1px solid rgba(52,168,83,.4);border-radius:20px;padding:4px 12px;font-size:.65rem;color:#4CAF50;letter-spacing:1px;margin-bottom:20px;}
+    .rsvp-form-wrap{display:flex;flex-direction:column;gap:10px;}
+    .fl{color:var(--lt-gold);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;}
+    .fi,.fs,.fta{width:100%;padding:11px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.25);border-radius:8px;color:#fff;font-size:.9rem;outline:none;transition:border-color .3s,background .3s;}
+    .fi::placeholder{color:#555}.fi:focus,.fs:focus,.fta:focus{border-color:var(--gold);background:rgba(255,255,255,.1);}
+    .fs option{background:#1a0800;color:#fff;}
+    .fta{min-height:70px;resize:none;font-family:'Cormorant Garamond',serif;}
+    .rsvp-row{display:flex;gap:12px;margin-top:6px;}
+    .btn-y,.btn-n{flex:1;padding:13px;border-radius:10px;border:2px solid var(--gold);font-size:.9rem;font-weight:700;cursor:pointer;transition:all .3s;font-family:'Cinzel Decorative',cursive;letter-spacing:1px;}
+    .btn-y{background:linear-gradient(135deg,var(--gold),var(--saffron));color:#1a0800;}
+    .btn-y:hover{transform:scale(1.04);box-shadow:0 6px 25px rgba(201,168,76,.5);}
+    .btn-n{background:transparent;color:var(--gold);}
+    .btn-n:hover{background:rgba(201,168,76,.1);transform:scale(1.04);}
+    .btn-y.busy,.btn-n.busy{opacity:.5;pointer-events:none;}
+    .saving{text-align:center;color:var(--gold);font-size:.8rem;margin-top:8px;display:none;animation:glowPulse 1s ease-in-out infinite;}
+    .rsvp-done{display:none;text-align:center;padding:16px 0;font-family:'Dancing Script',cursive;font-size:1.5rem;color:var(--gold);line-height:1.8;}
+    .rsvp-done.show{display:block;animation:fadeUp .8s ease;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-    .invite-header { text-align:center; padding:20px 0 10px; }
-    .we-request { color:var(--maroon); font-size:.78rem; letter-spacing:3px; text-transform:uppercase; }
-    .pleasure { color:#5a3a00; font-size:.9rem; font-style:italic; margin:8px 0; line-height:1.6; }
+    /* ── Share ── */
+    .share-wrap{background:var(--maroon);padding:26px 22px 30px;text-align:center;}
+    .sh-title{color:var(--lt-gold);font-size:.68rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;}
+    .sh-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+    .sh-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:30px;border:none;font-size:.88rem;font-weight:700;cursor:pointer;transition:transform .3s,box-shadow .3s;text-decoration:none;}
+    .sh-btn:hover{transform:translateY(-3px);}
+    .btn-wa{background:#25D366;color:#fff;box-shadow:0 4px 15px rgba(37,211,102,.3);}
+    .btn-wa:hover{box-shadow:0 8px 25px rgba(37,211,102,.5);}
+    .btn-cp{background:var(--gold);color:#1a0800;box-shadow:0 4px 15px rgba(201,168,76,.3);}
+    .btn-cp:hover{box-shadow:0 8px 25px rgba(201,168,76,.5);}
 
-    /* ─ Couple ─ */
-    .couple-section {
-      text-align:center; padding:20px 10px;
-      background:linear-gradient(180deg,transparent,rgba(201,168,76,.08),transparent);
-      border-radius:12px; margin:8px 0;
-    }
-    .groom-name,.bride-name {
-      font-family:'Cinzel Decorative',cursive; font-size:1.9rem; font-weight:700; line-height:1.2;
-      animation:shimmer 3s ease-in-out infinite;
-    }
-    .groom-name { color:var(--maroon); }
-    .bride-name { color:var(--dark-gold); }
-    @keyframes shimmer { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.25)} }
-    .groom-tamil,.bride-tamil { font-family:'Noto Serif Tamil',serif; font-size:.95rem; color:#666; margin-top:3px; }
-    .groom-parents,.bride-parents { font-size:.78rem; color:#888; font-style:italic; margin-top:4px; }
-    .and-symbol {
-      font-family:'Dancing Script',cursive; font-size:3.5rem; color:var(--gold); display:block;
-      margin:12px 0; text-shadow:0 2px 8px rgba(201,168,76,.4);
-      animation:heartbeat 1.5s ease-in-out infinite;
-    }
-    @keyframes heartbeat { 0%,100%{transform:scale(1)} 25%{transform:scale(1.12)} 75%{transform:scale(1.06)} }
+    /* ── Footer ── */
+    .footer{background:var(--deep);padding:22px;text-align:center;}
+    .f-bl{font-family:'Noto Serif Tamil',serif;color:var(--lt-gold);font-size:.95rem;margin-bottom:8px;}
+    .f-nm{color:rgba(245,230,179,.45);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;}
 
-    /* ─ Events section ─ */
-    .event-section {
-      background:linear-gradient(135deg,var(--maroon),#6b1525);
-      margin:12px -24px; padding:24px 28px;
+    /* ── Music button ── */
+    #mbtn{
+      position:fixed;bottom:24px;right:24px;z-index:100;
+      width:54px;height:54px;
+      background:linear-gradient(135deg,var(--maroon),var(--deep));
+      border:2px solid var(--gold);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;box-shadow:0 4px 20px rgba(122,28,46,.6);
+      transition:transform .3s;animation:popIn 1s ease 2s both;
     }
-    .event-title {
-      font-family:'Cinzel Decorative',cursive; color:var(--gold);
-      text-align:center; font-size:1rem; margin-bottom:16px; letter-spacing:2px;
-    }
-    .event-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .event-item {
-      background:rgba(255,255,255,.08); border:1px solid rgba(201,168,76,.4);
-      border-radius:10px; padding:12px; text-align:center;
-      transition:transform .3s,background .3s; cursor:default;
-    }
-    .event-item:hover { transform:translateY(-3px); background:rgba(255,255,255,.16); }
-    .event-item .icon { font-size:1.4rem; display:block; margin-bottom:4px; }
-    .event-item .label { font-size:.58rem; color:var(--light-gold); letter-spacing:2px; text-transform:uppercase; }
-    .event-item .value { font-size:.9rem; color:#fff; font-weight:600; margin-top:3px; }
-    .event-item .value-tamil { font-family:'Noto Serif Tamil',serif; font-size:.72rem; color:#ddd; margin-top:2px; }
-    .muhurtham-box {
-      grid-column:1/-1; border:2px solid var(--gold);
-      background:rgba(201,168,76,.12); border-radius:12px; padding:14px; text-align:center;
-    }
-    .muh-label { font-family:'Noto Serif Tamil',serif; color:var(--light-gold); font-size:.88rem; margin-bottom:5px; }
-    .muh-time { font-family:'Cinzel Decorative',cursive; color:var(--gold); font-size:1.3rem; }
-    .muh-sub { color:#ccc; font-size:.72rem; margin-top:4px; font-style:italic; }
-
-    /* ─ Countdown ─ */
-    .countdown-section { padding:20px 0; text-align:center; }
-    .countdown-title { color:var(--maroon); font-size:.72rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
-    .countdown-boxes { display:flex; justify-content:center; gap:12px; }
-    .cd-box {
-      background:linear-gradient(135deg,var(--maroon),#5a0f1e);
-      border:2px solid var(--gold); border-radius:10px;
-      width:64px; height:64px; display:flex; flex-direction:column;
-      justify-content:center; align-items:center;
-      transition:transform .3s; cursor:default;
-    }
-    .cd-box:hover { transform:scale(1.08); }
-    .cd-num { font-family:'Cinzel Decorative',cursive; font-size:1.4rem; color:var(--gold); line-height:1; }
-    .cd-label { font-size:.52rem; color:#ddd; letter-spacing:1px; margin-top:3px; text-transform:uppercase; }
-
-    /* ─ Venue ─ */
-    .venue-section { padding:4px 0 16px; text-align:center; }
-    .venue-name { font-family:'Cinzel Decorative',cursive; color:var(--maroon); font-size:1rem; margin-bottom:6px; }
-    .venue-address { font-size:.8rem; color:#666; font-style:italic; margin-bottom:12px; line-height:1.6; }
-    .btn-map {
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 24px;
-      background:linear-gradient(135deg,var(--maroon),#9a1a2e);
-      color:#fff; border:none; border-radius:30px;
-      font-size:.85rem; cursor:pointer; text-decoration:none;
-      transition:transform .3s,box-shadow .3s;
-      box-shadow:0 4px 15px rgba(122,28,46,.4);
-    }
-    .btn-map:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(122,28,46,.6); }
-
-    /* ─ Timeline ─ */
-    .events-timeline { padding:10px 0 20px; }
-    .timeline-title { font-family:'Cinzel Decorative',cursive; color:var(--maroon); text-align:center; font-size:.9rem; margin-bottom:16px; letter-spacing:1px; }
-    .timeline-item {
-      display:flex; align-items:flex-start; gap:12px;
-      padding:10px 8px; border-bottom:1px dashed rgba(201,168,76,.3);
-      cursor:pointer; border-radius:8px; transition:background .2s;
-    }
-    .timeline-item:hover { background:rgba(201,168,76,.08); }
-    .tl-icon {
-      width:40px; height:40px;
-      background:linear-gradient(135deg,var(--gold),var(--saffron));
-      border-radius:50%; display:flex; align-items:center; justify-content:center;
-      font-size:1.1rem; flex-shrink:0; box-shadow:0 2px 8px rgba(201,168,76,.4);
-    }
-    .tl-content { flex:1; }
-    .tl-name { color:var(--maroon); font-weight:600; font-size:.9rem; }
-    .tl-name-tamil { font-family:'Noto Serif Tamil',serif; color:#666; font-size:.75rem; }
-    .tl-time { color:var(--dark-gold); font-size:.75rem; margin-top:2px; }
-    .tl-desc { color:#888; font-size:.75rem; font-style:italic; margin-top:5px; display:none; line-height:1.5; }
-    .timeline-item.expanded .tl-desc { display:block; }
-    .tl-toggle { color:var(--gold); font-size:.68rem; margin-top:3px; }
-
-    /* ─ RSVP ─ */
-    .rsvp-section {
-      background:linear-gradient(135deg,#1a0800,#3d1500);
-      margin:0 -24px; padding:28px; text-align:center;
-    }
-    .rsvp-title { font-family:'Cinzel Decorative',cursive; color:var(--gold); font-size:1.1rem; margin-bottom:6px; }
-    .rsvp-subtitle { color:#ccc; font-size:.78rem; margin-bottom:20px; font-style:italic; }
-    .rsvp-form { display:flex; flex-direction:column; gap:10px; }
-    .rsvp-form input,.rsvp-form select {
-      padding:10px 16px; background:rgba(255,255,255,.08);
-      border:1px solid rgba(201,168,76,.4); border-radius:8px;
-      color:#fff; font-size:.9rem; outline:none; transition:border-color .3s;
-    }
-    .rsvp-form input::placeholder { color:#aaa; }
-    .rsvp-form input:focus,.rsvp-form select:focus { border-color:var(--gold); }
-    .rsvp-form select option { background:#3d1500; color:#fff; }
-    .rsvp-btns { display:flex; gap:10px; }
-    .btn-rsvp { flex:1; padding:12px; border:2px solid var(--gold); border-radius:8px; font-size:.88rem; cursor:pointer; transition:all .3s; }
-    .btn-yes { background:var(--gold); color:#1a0800; font-weight:700; }
-    .btn-yes:hover { background:var(--saffron); transform:scale(1.03); }
-    .btn-no  { background:transparent; color:var(--gold); }
-    .btn-no:hover { background:rgba(201,168,76,.1); }
-    .rsvp-success { display:none; color:var(--gold); font-family:'Dancing Script',cursive; font-size:1.4rem; padding:10px 0; line-height:1.7; }
-    .rsvp-success.show { display:block; animation:fadeIn .8s ease; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
-    /* ─ Share ─ */
-    .share-section { padding:20px 0 10px; text-align:center; }
-    .share-title { color:var(--maroon); font-size:.72rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
-    .share-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
-    .btn-share {
-      display:inline-flex; align-items:center; gap:6px;
-      padding:10px 20px; border-radius:30px; border:none; cursor:pointer;
-      font-size:.85rem; font-weight:600; transition:transform .3s,box-shadow .3s; text-decoration:none;
-    }
-    .btn-wa { background:#25D366; color:#fff; box-shadow:0 4px 15px rgba(37,211,102,.3); }
-    .btn-wa:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(37,211,102,.5); }
-    .btn-copy { background:var(--gold); color:#1a0800; box-shadow:0 4px 15px rgba(201,168,76,.3); }
-    .btn-copy:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(201,168,76,.5); }
-
-    /* ─ Footer ─ */
-    .card-footer { background:var(--maroon); padding:18px; text-align:center; }
-    .footer-blessing { font-family:'Noto Serif Tamil',serif; color:var(--light-gold); font-size:.92rem; margin-bottom:6px; }
-    .footer-sub { color:rgba(245,230,179,.6); font-size:.68rem; letter-spacing:2px; }
-
-    /* ─ Music btn ─ */
-    .music-btn {
-      position:fixed; bottom:20px; right:20px; z-index:50;
-      width:50px; height:50px; background:var(--gold);
-      border-radius:50%; display:flex; align-items:center; justify-content:center;
-      cursor:pointer; font-size:1.3rem; border:none;
-      box-shadow:0 4px 15px rgba(201,168,76,.5);
-      transition:transform .3s;
-    }
-    .music-btn:hover { transform:scale(1.12); }
+    @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+    #mbtn:hover{transform:scale(1.12);}
+    .music-icon{font-size:1.4rem;}
+    .waves{display:none;align-items:center;gap:2px;height:22px;}
+    .waves.on{display:flex;}
+    .wb{width:3px;background:var(--gold);border-radius:3px;animation:wave .6s ease-in-out infinite alternate;}
+    .wb:nth-child(1){height:8px}.wb:nth-child(2){height:16px;animation-delay:.1s}.wb:nth-child(3){height:20px;animation-delay:.2s}.wb:nth-child(4){height:12px;animation-delay:.3s}
+    @keyframes wave{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
 
     @media(max-width:480px){
-      .groom-name,.bride-name{font-size:1.5rem}
-      .and-symbol{font-size:2.8rem}
-      .cd-box{width:54px;height:54px}
-      .cd-num{font-size:1.1rem}
+      .g-name,.b-name{font-size:1.55rem}
+      .and-sym{font-size:3.2rem}
+      .cd-n{font-size:1.6rem}
+      .cd-box{min-width:60px}
+      .frame{width:95px;height:95px}
     }
   </style>
 </head>
 <body>
 
-<div class="particles" id="particles"></div>
+<canvas id="confetti-canvas"></canvas>
+<div id="petals"></div>
+<div id="yt-player"></div>
 
-<!-- ══ Envelope Overlay ══ -->
-<div id="envelope-overlay" onclick="openInvite()">
+<!-- ══════════ ENVELOPE ══════════ -->
+<div id="env-screen" onclick="openCard()">
+  <span class="env-star" style="top:7%;left:10%;font-size:1rem;animation-delay:.2s">✦</span>
+  <span class="env-star" style="top:7%;right:10%;font-size:1rem;animation-delay:.6s">✦</span>
+  <span class="env-star" style="top:18%;left:4%;font-size:.8rem;animation-delay:1s">✿</span>
+  <span class="env-star" style="top:18%;right:4%;font-size:.8rem;animation-delay:1.4s">✿</span>
+  <span class="env-star" style="bottom:22%;left:8%;font-size:1.2rem;animation-delay:.4s">🌸</span>
+  <span class="env-star" style="bottom:22%;right:8%;font-size:1.2rem;animation-delay:.8s">🌸</span>
+  <span class="env-star" style="bottom:12%;left:22%;font-size:1rem;animation-delay:1.2s">🪔</span>
+  <span class="env-star" style="bottom:12%;right:22%;font-size:1rem;animation-delay:1.6s">🪔</span>
+  <span class="env-star" style="top:40%;left:2%;font-size:.7rem;animation-delay:.9s">🌺</span>
+  <span class="env-star" style="top:40%;right:2%;font-size:.7rem;animation-delay:1.3s">🌺</span>
+
   <div class="env-wrap">
-    <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+    <svg class="env-svg" viewBox="0 0 320 230" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="eg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#7b1c2e"/>
-          <stop offset="100%" style="stop-color:#4a0e1c"/>
+        <linearGradient id="eb" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#7b1c2e"/><stop offset="50%" style="stop-color:#5a0f1e"/><stop offset="100%" style="stop-color:#3d0a14"/>
         </linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
-      <rect x="5" y="40" width="270" height="155" rx="8" fill="url(#eg)" stroke="#c9a84c" stroke-width="2"/>
-      <polygon points="5,40 140,130 275,40" fill="#9a2035" stroke="#c9a84c" stroke-width="1.5"/>
-      <polygon points="5,40 5,195 105,120" fill="#6a1025" stroke="#c9a84c" stroke-width="1"/>
-      <polygon points="275,40 275,195 175,120" fill="#6a1025" stroke="#c9a84c" stroke-width="1"/>
-      <circle cx="140" cy="118" r="24" fill="#c9a84c" stroke="#9a6f00" stroke-width="2.5"/>
-      <circle cx="140" cy="118" r="19" fill="none" stroke="#9a6f00" stroke-width="1" stroke-dasharray="3,2"/>
-      <text x="140" y="126" text-anchor="middle" font-size="22" fill="#5a1020" font-family="serif">ॐ</text>
-      <text x="28" y="78" font-size="14" fill="#c9a84c" opacity="0.7">✦</text>
-      <text x="240" y="78" font-size="14" fill="#c9a84c" opacity="0.7">✦</text>
-      <text x="45" y="172" font-size="10" fill="#c9a84c" opacity="0.5">✿</text>
-      <text x="220" y="172" font-size="10" fill="#c9a84c" opacity="0.5">✿</text>
-      <path d="M20 152 Q30 138 40 152 Q30 166 20 152" fill="#2d6a2d" opacity="0.5"/>
-      <path d="M240 152 Q250 138 260 152 Q250 166 240 152" fill="#2d6a2d" opacity="0.5"/>
+      <rect x="5" y="50" width="310" height="175" rx="10" fill="url(#eb)" stroke="#c9a84c" stroke-width="2"/>
+      <!-- decorative inner border -->
+      <rect x="12" y="57" width="296" height="161" rx="7" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="1" stroke-dasharray="6,4"/>
+      <!-- flap -->
+      <polygon points="5,50 160,148 315,50" fill="#9a2035" stroke="#c9a84c" stroke-width="1.5"/>
+      <polygon points="5,50 5,225 122,137" fill="#5a0f1e" stroke="#c9a84c" stroke-width="1"/>
+      <polygon points="315,50 315,225 198,137" fill="#5a0f1e" stroke="#c9a84c" stroke-width="1"/>
+      <!-- Wax seal -->
+      <circle cx="160" cy="136" r="32" fill="#c9a84c" filter="url(#glow)" stroke="#9a6f00" stroke-width="2"/>
+      <circle cx="160" cy="136" r="26" fill="none" stroke="#9a6f00" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="160" cy="136" r="20" fill="rgba(154,111,0,0.3)" stroke="none"/>
+      <text x="160" y="145" text-anchor="middle" font-size="26" fill="#4a0e1c" font-family="serif">ॐ</text>
+      <!-- Mango leaves -->
+      <path d="M28 182 Q44 163 60 182 Q44 201 28 182" fill="#2d6a2d" opacity=".75"/>
+      <path d="M260 182 Q276 163 292 182 Q276 201 260 182" fill="#2d6a2d" opacity=".75"/>
+      <path d="M14 158 Q27 142 40 158 Q27 174 14 158" fill="#2d6a2d" opacity=".5"/>
+      <path d="M280 158 Q293 142 306 158 Q293 174 280 158" fill="#2d6a2d" opacity=".5"/>
+      <!-- Stars -->
+      <text x="36" y="92" font-size="18" fill="#c9a84c" filter="url(#glow)" opacity=".9">✦</text>
+      <text x="274" y="92" font-size="18" fill="#c9a84c" filter="url(#glow)" opacity=".9">✦</text>
+      <text x="24" y="78" font-size="12" fill="#f4a328" opacity=".6">✿</text>
+      <text x="284" y="78" font-size="12" fill="#f4a328" opacity=".6">✿</text>
+      <!-- Bottom center flourish -->
+      <text x="145" y="215" font-size="10" fill="#c9a84c" opacity=".5">❧</text>
+      <text x="158" y="217" font-size="12" fill="#c9a84c" opacity=".7">💍</text>
+      <text x="172" y="215" font-size="10" fill="#c9a84c" opacity=".5">❧</text>
     </svg>
   </div>
-  <div class="tap-text">✨ Tap to Open Your Invitation ✨</div>
-  <div class="tamil-tap">உங்கள் அழைப்பிதழை திறக்க தொடவும்</div>
+  <div class="env-cta">
+    <span class="en">✨ Tap to Open Your Invitation ✨</span>
+    <span class="ta">திருமண அழைப்பிதழை திறக்க தொடவும்</span>
+  </div>
 </div>
 
-<!-- ══ Main Card ══ -->
+<!-- ══════════ MAIN CARD ══════════ -->
 <div id="card">
-  <div class="gold-border"></div>
+  <div class="stripe"></div>
 
-  <div class="kolam-header">
-    <svg class="kolam-svg" viewBox="0 0 480 70" xmlns="http://www.w3.org/2000/svg">
-      <g fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.7">
-        <circle cx="60" cy="35" r="12"/><circle cx="60" cy="35" r="5"/>
-        <line x1="60" y1="17" x2="60" y2="23"/><line x1="60" y1="47" x2="60" y2="53"/>
-        <line x1="42" y1="35" x2="48" y2="35"/><line x1="72" y1="35" x2="78" y2="35"/>
-        <line x1="47" y1="22" x2="52" y2="27"/><line x1="68" y1="43" x2="73" y2="48"/>
-        <line x1="73" y1="22" x2="68" y2="27"/><line x1="52" y1="43" x2="47" y2="48"/>
-        <ellipse cx="240" cy="46" rx="20" ry="8"/>
-        <rect x="232" y="18" width="16" height="28" rx="3"/>
-        <line x1="240" y1="8" x2="240" y2="18"/>
-        <circle cx="240" cy="6" r="4" fill="#c9a84c"/>
-        <line x1="218" y1="30" x2="232" y2="30"/><line x1="248" y1="30" x2="262" y2="30"/>
-        <path d="M220 30 Q215 20 222 15"/><path d="M260 30 Q265 20 258 15"/>
-        <circle cx="420" cy="35" r="12"/><circle cx="420" cy="35" r="5"/>
-        <line x1="420" y1="17" x2="420" y2="23"/><line x1="420" y1="47" x2="420" y2="53"/>
-        <line x1="402" y1="35" x2="408" y2="35"/><line x1="432" y1="35" x2="438" y2="35"/>
-        <line x1="407" y1="22" x2="412" y2="27"/><line x1="428" y1="43" x2="433" y2="48"/>
-        <line x1="433" y1="22" x2="428" y2="27"/><line x1="412" y1="43" x2="407" y2="48"/>
-        <path d="M80 35 Q160 10 240 35 Q320 60 400 35" stroke-dasharray="4,4"/>
+  <!-- Header -->
+  <div class="hdr">
+    <div class="diya-row">
+      <span class="diya">🪔</span><span class="diya">🪔</span><span class="diya">🪔</span>
+    </div>
+    <svg class="kolam-svg" viewBox="0 0 460 60" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#c9a84c" stroke-width="1.5" opacity=".65">
+        <circle class="kolam-path" cx="55" cy="30" r="14"/><circle class="kolam-path" cx="55" cy="30" r="6"/>
+        <line x1="55" y1="10" x2="55" y2="18"/><line x1="55" y1="42" x2="55" y2="50"/>
+        <line x1="35" y1="30" x2="43" y2="30"/><line x1="67" y1="30" x2="75" y2="30"/>
+        <line x1="41" y1="16" x2="47" y2="22"/><line x1="63" y1="38" x2="69" y2="44"/>
+        <line x1="69" y1="16" x2="63" y2="22"/><line x1="47" y1="38" x2="41" y2="44"/>
+        <ellipse class="kolam-path" cx="230" cy="48" rx="22" ry="8"/>
+        <path class="kolam-path" d="M218 14 Q218 45 230 48 Q242 45 242 14 Z"/>
+        <line x1="230" y1="5" x2="230" y2="14"/><circle cx="230" cy="4" r="4" fill="#c9a84c"/>
+        <line x1="205" y1="28" x2="218" y2="28"/><line x1="242" y1="28" x2="255" y2="28"/>
+        <path d="M205 28 Q198 18 206 10"/><path d="M255 28 Q262 18 254 10"/>
+        <circle class="kolam-path" cx="405" cy="30" r="14"/><circle class="kolam-path" cx="405" cy="30" r="6"/>
+        <line x1="405" y1="10" x2="405" y2="18"/><line x1="405" y1="42" x2="405" y2="50"/>
+        <line x1="385" y1="30" x2="393" y2="30"/><line x1="417" y1="30" x2="425" y2="30"/>
+        <line x1="391" y1="16" x2="397" y2="22"/><line x1="413" y1="38" x2="419" y2="44"/>
+        <line x1="419" y1="16" x2="413" y2="22"/><line x1="397" y1="38" x2="391" y2="44"/>
+        <path class="kolam-path" d="M75 30 Q115 8 160 30 Q200 52 230 30 Q260 8 300 30 Q345 52 385 30" stroke-dasharray="5,3"/>
       </g>
     </svg>
-    <span class="om-symbol">ॐ</span>
-    <div class="tamil-blessing">திருமண அழைப்பிதழ்</div>
-    <div class="flower-divider">🌸 🪔 🌸</div>
+    <span class="hdr-om">ॐ</span>
+    <div class="hdr-title">திருமண அழைப்பிதழ்</div>
+    <div class="hdr-sub">Wedding Invitation</div>
+    <div class="garland">
+      <span>🌸</span><span>🌺</span><span>🌼</span><span>🌸</span><span>🌺</span>
+      <span>💛</span><span>🌺</span><span>🌸</span><span>🌼</span><span>🌺</span>
+    </div>
   </div>
 
-  <div class="card-body">
-    <div class="invite-header">
-      <div class="we-request">— With Blessings of Lord Murugan —</div>
-      <div class="pleasure">Together with their families, we joyfully invite you<br>to witness the sacred union of</div>
-    </div>
-
-    <div class="couple-section">
-      <div class="groom-name">Ramakrishnan</div>
-      <div class="groom-tamil">ராமகிருஷ்ணன்</div>
-      <div class="groom-parents">S/o Thiru. Krishnamoorthi & Thirumathi. Rajeshwari</div>
-      <span class="and-symbol">&amp;</span>
-      <div class="bride-name">Sweatha</div>
-      <div class="bride-tamil">ஸ்வேதா</div>
-      <div class="bride-parents">D/o Thiru. Elumalai & Thirumathi. Jayanthi</div>
-    </div>
-    <div class="flower-divider">🌺 💛 🌺</div>
-  </div>
-
-  <!-- Wedding Event Details -->
-  <div class="event-section">
-    <div class="event-title">🕉️ திருமண விழா · Wedding Day</div>
-    <div class="event-grid">
-      <div class="event-item">
-        <span class="icon">📅</span>
-        <div class="label">Date · தேதி</div>
-        <div class="value">Oct 30, 2026</div>
-        <div class="value-tamil">அக்டோபர் 30, 2026</div>
+  <!-- Couple -->
+  <div class="couple rv">
+    <div class="prelude">— With Blessings of Lord Murugan —</div>
+    <div class="intro">Together with their families, we joyfully invite you<br>to witness and bless the sacred union of</div>
+    <div class="photos-row">
+      <div style="text-align:center">
+        <div class="frame">🤵</div>
+        <div class="g-name">Ramakrishnan</div>
+        <div class="n-tamil">ராமகிருஷ்ணன்</div>
+        <div class="n-parents">S/o Thiru. Krishnamoorthi<br>&amp; Thirumathi. Rajeshwari</div>
       </div>
-      <div class="event-item">
-        <span class="icon">📍</span>
-        <div class="label">Venue · இடம்</div>
-        <div class="value">Mailam Murugan Temple</div>
-        <div class="value-tamil">மைலம் முருகன் கோவில்</div>
+      <div class="and-col">
+        <div class="and-sym">&amp;</div>
+        <div class="weds-txt">weds</div>
       </div>
-      <div class="muhurtham-box">
-        <div class="muh-label">🪔 திருமண முகூர்த்தம் 🪔</div>
-        <div class="muh-time">6:00 AM – 7:30 AM</div>
-        <div class="muh-sub">Auspicious Muhurtham Time · வேத முகூர்த்தம்</div>
+      <div style="text-align:center">
+        <div class="frame">👰</div>
+        <div class="b-name">Sweatha</div>
+        <div class="n-tamil">ஸ்வேதா</div>
+        <div class="n-parents">D/o Thiru. Elumalai<br>&amp; Thirumathi. Jayanthi</div>
       </div>
     </div>
   </div>
 
-  <!-- Reception Event Details -->
-  <div class="event-section" style="margin-top:4px; background:linear-gradient(135deg,#1a4a2e,#0d3320);">
-    <div class="event-title" style="color:#a8e6c0;">💒 வரவேற்பு விழா · Reception Night</div>
-    <div class="event-grid">
-      <div class="event-item">
-        <span class="icon">📅</span>
-        <div class="label">Date · தேதி</div>
-        <div class="value">Nov 1, 2026</div>
-        <div class="value-tamil">நவம்பர் 1, 2026</div>
+  <div class="div"><span>🌸 🪔 🌸</span></div>
+
+  <!-- Event Cards -->
+  <div class="cards-wrap">
+    <!-- Wedding -->
+    <div class="ev-card rv">
+      <div class="ev-hdr" style="background:linear-gradient(135deg,#7b1c2e,#4a0e1c)">
+        <span class="ic">🕉️</span>
+        <div><div class="et">Wedding Ceremony</div><div class="es">திருமண விழா</div></div>
       </div>
-      <div class="event-item">
-        <span class="icon">⏰</span>
-        <div class="label">Time · நேரம்</div>
-        <div class="value">6:00 PM – 10:30 PM</div>
-        <div class="value-tamil">மாலை 6 – இரவு 10:30</div>
+      <div class="ev-body">
+        <div class="dr"><span class="di">📅</span><div><div class="dl">Date · தேதி</div><div class="dv">Friday, October 30, 2026</div><div class="dt">வெள்ளிக்கிழமை, அக்டோபர் 30, 2026</div></div></div>
+        <div class="dr"><span class="di">📍</span><div><div class="dl">Venue · இடம்</div><div class="dv">Mailam Murugan Temple</div><div class="dt">மைலம் முருகன் கோவில், விழுப்புரம்</div></div></div>
+        <div class="muh">
+          <div class="ml">🪔 திருமண முகூர்த்தம் 🪔</div>
+          <div class="mt">6:00 AM – 7:30 AM</div>
+          <div class="mn">Auspicious Vedic Muhurtham Time</div>
+        </div>
+        <a class="map-btn" href="https://maps.google.com/?q=Mailam+Murugan+Temple+Villupuram+Tamil+Nadu" target="_blank" style="background:linear-gradient(135deg,#7b1c2e,#a02040);color:#fff;">
+          📍 Get Directions — Wedding Venue
+        </a>
       </div>
-      <div class="muhurtham-box" style="border-color:rgba(168,230,192,.5); background:rgba(168,230,192,.1);">
-        <div class="muh-label" style="color:#a8e6c0;">📍 The Palace House</div>
-        <div class="muh-time" style="color:#a8e6c0; font-size:1rem;">136/49, Sai Baba Kovil St</div>
-        <div class="muh-sub">Cholamandal Artists Village, Injambakkam, Chennai – 600115</div>
+    </div>
+
+    <!-- Reception -->
+    <div class="ev-card rv">
+      <div class="ev-hdr" style="background:linear-gradient(135deg,#1a4a2e,#0d3320)">
+        <span class="ic">💒</span>
+        <div><div class="et">Reception Night</div><div class="es">வரவேற்பு விழா</div></div>
+      </div>
+      <div class="ev-body">
+        <div class="dr"><span class="di">📅</span><div><div class="dl">Date · தேதி</div><div class="dv">Sunday, November 1, 2026</div><div class="dt">ஞாயிற்றுக்கிழமை, நவம்பர் 1, 2026</div></div></div>
+        <div class="dr"><span class="di">⏰</span><div><div class="dl">Time · நேரம்</div><div class="dv">6:00 PM – 10:30 PM</div><div class="dt">மாலை 6 மணி – இரவு 10:30</div></div></div>
+        <div class="dr"><span class="di">📍</span><div><div class="dl">Venue · இடம்</div><div class="dv">The Palace House</div><div class="dt">136/49, Sai Baba Kovil St, Cholamandal Artists Village, Injambakkam, Chennai – 600115</div></div></div>
+        <a class="map-btn" href="https://maps.google.com/?q=136+Sai+Baba+Kovil+Street+Injambakkam+Chennai+600115" target="_blank" style="background:linear-gradient(135deg,#1a4a2e,#1e6b3a);color:#fff;">
+          📍 Get Directions — Reception Venue
+        </a>
       </div>
     </div>
   </div>
 
-  <div class="card-body">
-    <div class="countdown-section">
-      <div class="countdown-title">Counting Down to the Big Day</div>
-      <div class="countdown-boxes">
-        <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Days</div></div>
-        <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Hours</div></div>
-        <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Mins</div></div>
-        <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Secs</div></div>
-      </div>
+  <div class="div"><span>✿ 💛 ✿</span></div>
+
+  <!-- Countdown -->
+  <div class="cd-wrap rv">
+    <div class="cd-title">🌸 Counting Down to the Wedding Day 🌸</div>
+    <div class="cd-boxes">
+      <div class="cd-box"><span class="cd-n" id="cd-d">--</span><span class="cd-l">Days</span></div>
+      <div class="cd-c">:</div>
+      <div class="cd-box"><span class="cd-n" id="cd-h">--</span><span class="cd-l">Hours</span></div>
+      <div class="cd-c">:</div>
+      <div class="cd-box"><span class="cd-n" id="cd-m">--</span><span class="cd-l">Mins</span></div>
+      <div class="cd-c">:</div>
+      <div class="cd-box"><span class="cd-n" id="cd-s">--</span><span class="cd-l">Secs</span></div>
     </div>
-
-    <div class="flower-divider">✿ ✿ ✿</div>
-
-    <!-- Wedding Venue -->
-    <div class="venue-section">
-      <div style="font-size:.72rem;color:var(--maroon);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">🕉️ Wedding Venue</div>
-      <div class="venue-name">Mailam Murugan Temple</div>
-      <div class="venue-address">Mailam, Villupuram District,<br>Tamil Nadu, India</div>
-      <a class="btn-map" href="https://maps.google.com/?q=Mailam+Murugan+Temple+Villupuram+Tamil+Nadu" target="_blank">📍 Wedding Venue Map</a>
-    </div>
-
-    <div class="flower-divider">🌼 🌼 🌼</div>
-
-    <!-- Reception Venue -->
-    <div class="venue-section" style="background:linear-gradient(180deg,transparent,rgba(45,106,46,.06),transparent);border-radius:12px;padding:12px 0 16px;">
-      <div style="font-size:.72rem;color:#2d6a2d;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">💒 Reception Venue</div>
-      <div class="venue-name" style="color:#2d6a2d;">The Palace House</div>
-      <div class="venue-address">136/49, Sai Baba Kovil St,<br>Cholamandal Artists Village, Injambakkam,<br>Chennai – 600 115, Tamil Nadu</div>
-      <a class="btn-map" style="background:linear-gradient(135deg,#2d6a2d,#1a4a1a);" href="https://maps.google.com/?q=136/49+Sai+Baba+Kovil+Street+Injambakkam+Chennai+600115" target="_blank">📍 Reception Venue Map</a>
-    </div>
-
-    <div class="flower-divider">🌼 🌼 🌼</div>
-
-    <div class="events-timeline">
-      <div class="timeline-title">✦ Wedding Events Schedule ✦</div>
-
-      <div class="timeline-item" onclick="toggleEvent(this)">
-        <div class="tl-icon">🪔</div>
-        <div class="tl-content">
-          <div class="tl-name">Nalangu (Haldi) Ceremony</div>
-          <div class="tl-name-tamil">நலங்கு விழா</div>
-          <div class="tl-time">📅 Oct 29 · 4:00 PM – 6:00 PM</div>
-          <div class="tl-desc">Turmeric ceremony with family. The bride and groom's families apply turmeric paste — a sacred purification ritual filled with folk songs, joy, and laughter.</div>
-          <div class="tl-toggle">▼ Tap for details</div>
-        </div>
-      </div>
-
-      <div class="timeline-item" onclick="toggleEvent(this)">
-        <div class="tl-icon">🌸</div>
-        <div class="tl-content">
-          <div class="tl-name">Mehendi & Sangeet Night</div>
-          <div class="tl-name-tamil">மருதாணி & இசை மாலை</div>
-          <div class="tl-time">📅 Oct 29 · 7:00 PM – 10:00 PM</div>
-          <div class="tl-desc">Enjoy traditional Carnatic music and folk songs. The bride is adorned with beautiful mehendi while families celebrate with dance and music.</div>
-          <div class="tl-toggle">▼ Tap for details</div>
-        </div>
-      </div>
-
-      <div class="timeline-item" onclick="toggleEvent(this)">
-        <div class="tl-icon">🕉️</div>
-        <div class="tl-content">
-          <div class="tl-name">Sacred Wedding Ceremony</div>
-          <div class="tl-name-tamil">திருமண விழா</div>
-          <div class="tl-time">📅 Oct 30 · 6:00 AM – 7:30 AM</div>
-          <div class="tl-desc">Sacred Vedic rituals — Kasi Yatrai, Oonjal (swing ceremony), Maalai Maatral (garland exchange), and Saptapadi (7 vows) around the holy fire.</div>
-          <div class="tl-toggle">▼ Tap for details</div>
-        </div>
-      </div>
-
-      <div class="timeline-item" onclick="toggleEvent(this)">
-        <div class="tl-icon">🍽️</div>
-        <div class="tl-content">
-          <div class="tl-name">Grand Wedding Feast</div>
-          <div class="tl-name-tamil">திருமண விருந்து</div>
-          <div class="tl-time">📅 Oct 30 · 8:00 AM – 2:00 PM</div>
-          <div class="tl-desc">Traditional Tamil sadhya on banana leaf — sambar, rasam, kootu, avial, payasam and 20+ dishes. A true feast for all!</div>
-          <div class="tl-toggle">▼ Tap for details</div>
-        </div>
-      </div>
-
-      <div class="timeline-item" onclick="toggleEvent(this)">
-        <div class="tl-icon">💒</div>
-        <div class="tl-content">
-          <div class="tl-name">Evening Reception</div>
-          <div class="tl-name-tamil">வரவேற்பு விழா</div>
-          <div class="tl-time">📅 Nov 1 · 6:00 PM – 10:30 PM</div>
-          <div class="tl-desc">Grand reception at The Palace House, Injambakkam, Chennai — join the newlyweds for blessings, photography, music, and a memorable evening of celebration.</div>
-          <div class="tl-toggle">▼ Tap for details</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="flower-divider">🌹 💕 🌹</div>
   </div>
+
+  <div class="div"><span>🌺 ❤️ 🌺</span></div>
+
+  <!-- Timeline -->
+  <div class="tl-wrap rv">
+    <div class="sec-title">✦ Celebrations Schedule ✦</div>
+
+    <div class="tl-item" onclick="toggleTl(this)">
+      <div class="tl-dot">🪔</div>
+      <div class="tl-body">
+        <div class="tl-n">Nalangu (Haldi) Ceremony</div><div class="tl-ta">நலங்கு விழா</div>
+        <div class="tl-t">📅 Oct 29 · 4:00 PM – 6:00 PM</div>
+        <div class="tl-d">Families apply sacred turmeric paste to purify the bride and groom — a joyful ritual filled with folk songs, laughter and blessings.</div>
+        <div class="tl-arr">▼ Read more</div>
+      </div>
+    </div>
+
+    <div class="tl-item" onclick="toggleTl(this)">
+      <div class="tl-dot">🌸</div>
+      <div class="tl-body">
+        <div class="tl-n">Mehendi & Sangeet Night</div><div class="tl-ta">மருதாணி & இசை மாலை</div>
+        <div class="tl-t">📅 Oct 29 · 7:00 PM – 10:00 PM</div>
+        <div class="tl-d">Beautiful mehendi adorns the bride while families celebrate with traditional Carnatic music, folk songs and festive dances.</div>
+        <div class="tl-arr">▼ Read more</div>
+      </div>
+    </div>
+
+    <div class="tl-item" onclick="toggleTl(this)">
+      <div class="tl-dot">🕉️</div>
+      <div class="tl-body">
+        <div class="tl-n">Sacred Wedding Ceremony</div><div class="tl-ta">திருமண விழா · Mailam Murugan Temple</div>
+        <div class="tl-t">📅 Oct 30 · 6:00 AM – 7:30 AM</div>
+        <div class="tl-d">Sacred Vedic rituals — Kasi Yatrai, Oonjal (sacred swing), Maalai Maatral (garland exchange), Thaali tying, and Saptapadi (7 holy vows) around the sacred fire.</div>
+        <div class="tl-arr">▼ Read more</div>
+      </div>
+    </div>
+
+    <div class="tl-item" onclick="toggleTl(this)">
+      <div class="tl-dot">🍽️</div>
+      <div class="tl-body">
+        <div class="tl-n">Grand Wedding Feast</div><div class="tl-ta">திருமண விருந்து</div>
+        <div class="tl-t">📅 Oct 30 · 8:00 AM – 2:00 PM</div>
+        <div class="tl-d">Traditional Tamil sadhya served with love on fresh banana leaves — sambar, rasam, kootu, avial, vadai, payasam and 20+ authentic dishes.</div>
+        <div class="tl-arr">▼ Read more</div>
+      </div>
+    </div>
+
+    <div class="tl-item" onclick="toggleTl(this)">
+      <div class="tl-dot">💒</div>
+      <div class="tl-body">
+        <div class="tl-n">Grand Reception Evening</div><div class="tl-ta">வரவேற்பு விழா · The Palace House</div>
+        <div class="tl-t">📅 Nov 1 · 6:00 PM – 10:30 PM</div>
+        <div class="tl-d">Elegant evening at The Palace House, Injambakkam, Chennai — blessings, photography, dinner and a memorable celebration with the newlyweds.</div>
+        <div class="tl-arr">▼ Read more</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div"><span>💌 💌 💌</span></div>
 
   <!-- RSVP -->
-  <div class="rsvp-section">
-    <div class="rsvp-title">💌 RSVP Kindly</div>
-    <div class="rsvp-subtitle">Please confirm your attendance · உங்கள் வருகையை தெரிவிக்கவும்</div>
-    <div class="rsvp-form" id="rsvp-form">
-      <input type="text" id="rsvp-name"   placeholder="Your Name · உங்கள் பெயர்"/>
-      <input type="tel"  id="rsvp-phone"  placeholder="Mobile Number · அலைபேசி"/>
-      <select id="rsvp-guests">
-        <option value="" disabled selected>Number of guests · விருந்தினர்</option>
-        <option>1</option><option>2</option><option>3</option>
-        <option>4</option><option>5</option><option>6+</option>
-      </select>
-      <div class="rsvp-btns">
-        <button class="btn-rsvp btn-yes" onclick="submitRSVP('yes')">✓ Joyfully Accept</button>
-        <button class="btn-rsvp btn-no"  onclick="submitRSVP('no')">✗ Regretfully Decline</button>
-      </div>
+  <div class="rsvp-wrap rv">
+    <div class="rsvp-title">💌 Kindly RSVP</div>
+    <div class="rsvp-sub">உங்கள் வருகையை உறுதிப்படுத்தவும்</div>
+    <div style="text-align:center;margin-bottom:20px;">
+      <span class="sheets-badge">🟢 Responses saved to Google Sheets</span>
     </div>
-    <div class="rsvp-success" id="rsvp-success"></div>
+    <div class="rsvp-form-wrap" id="rsvp-form">
+      <div><label class="fl">Full Name · உங்கள் பெயர்</label><input class="fi" id="f-name" type="text" placeholder="Enter your name"/></div>
+      <div><label class="fl">Mobile Number · அலைபேசி</label><input class="fi" id="f-phone" type="tel" placeholder="+91 XXXXX XXXXX"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div><label class="fl">Guests · விருந்தினர்</label>
+          <select class="fs" id="f-guests"><option value="" disabled selected>Count</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
+        </div>
+        <div><label class="fl">Attending · வருகை</label>
+          <select class="fs" id="f-events"><option value="" disabled selected>Events</option><option>Wedding Only</option><option>Reception Only</option><option>Both Events</option><option>All Events</option></select>
+        </div>
+      </div>
+      <div><label class="fl">Blessings · வாழ்த்துகள் (optional)</label><textarea class="fta" id="f-msg" placeholder="Your blessings for the couple..."></textarea></div>
+      <div class="rsvp-row">
+        <button class="btn-y" onclick="submitRSVP('yes')">🎉 Joyfully Accept</button>
+        <button class="btn-n" onclick="submitRSVP('no')">Regretfully Decline</button>
+      </div>
+      <div class="saving" id="saving">💾 Saving your response to spreadsheet...</div>
+    </div>
+    <div class="rsvp-done" id="rsvp-done"></div>
   </div>
 
-  <div class="card-body">
-    <div class="share-section">
-      <div class="share-title">Share the Joy · மகிழ்ச்சியை பகிர்க</div>
-      <div class="share-btns">
-        <a class="btn-share btn-wa" href="#" onclick="shareWA(event)">💬 Share on WhatsApp</a>
-        <button class="btn-share btn-copy" onclick="copyLink()">🔗 Copy Link</button>
-      </div>
+  <!-- Share -->
+  <div class="share-wrap rv">
+    <div class="sh-title">Share the Joy · மகிழ்ச்சியை பகிர்வோம்</div>
+    <div class="sh-row">
+      <a class="sh-btn btn-wa" href="#" onclick="shareWA(event)">💬 Share on WhatsApp</a>
+      <button class="sh-btn btn-cp" onclick="copyLink()">🔗 Copy Invite Link</button>
     </div>
   </div>
 
-  <div class="card-footer">
-    <div class="footer-blessing">வாழ்க வளமுடன் · நலமுடன் வாழ்க 🙏</div>
-    <div class="footer-sub">WITH DIVINE BLESSINGS · ✦ · KRISHNAMOORTHI & ELUMALAI FAMILIES</div>
+  <!-- Footer -->
+  <div class="footer">
+    <div class="f-bl">வாழ்க வளமுடன் · நலமுடன் வாழ்க 🙏</div>
+    <div style="color:var(--gold);font-size:1.4rem;margin:8px 0;">💍</div>
+    <div class="f-nm">With Divine Blessings · Krishnamoorthi &amp; Elumalai Families</div>
   </div>
-  <div class="gold-border"></div>
+  <div class="stripe"></div>
 </div>
 
-<button class="music-btn" id="music-btn" onclick="toggleMusic()" title="Toggle Music">🎵</button>
+<!-- Music Button -->
+<button id="mbtn" onclick="toggleMusic()" title="Toggle Background Music">
+  <span class="music-icon" id="m-icon">🎵</span>
+  <div class="waves" id="m-waves"><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div></div>
+</button>
 
 <script>
-// Floating petals
+// ═══════════════ CONFIG ═══════════════════════════════════════════
+// 👇 Paste your Google Apps Script URL here after setup
+const SHEET_URL  = 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL';
+const WA_NUMBER  = '919876543210'; // Replace with real number
+const YT_ID      = '5JkkUXeajbM';  // YouTube BGM video ID
+const WED_DATE   = new Date('2026-10-30T06:00:00');
+// ══════════════════════════════════════════════════════════════════
+
+// ── Floating petals ────────────────────────────────────────────
 (function(){
-  const c=['#c9a84c','#f4a328','#ff9aa2','#ffdac1','#e2f0cb','#ffb7b2'];
-  const p=document.getElementById('particles');
-  for(let i=0;i<35;i++){
+  const shapes=['🌸','🌺','✿','🌼','🌷','🌻'];
+  const p=document.getElementById('petals');
+  for(let i=0;i<45;i++){
     const el=document.createElement('div');
-    el.className='particle';
-    el.style.cssText=`left:${Math.random()*100}vw;width:${4+Math.random()*10}px;height:${4+Math.random()*10}px;background:${c[i%c.length]};animation-duration:${7+Math.random()*10}s;animation-delay:${Math.random()*12}s`;
+    el.className='petal';
+    el.textContent=shapes[i%shapes.length];
+    el.style.cssText=`left:${Math.random()*100}vw;font-size:${10+Math.random()*16}px;animation-duration:${9+Math.random()*13}s;animation-delay:${Math.random()*16}s;`;
     p.appendChild(el);
   }
 })();
 
-function openInvite(){
-  const ov=document.getElementById('envelope-overlay');
-  const card=document.getElementById('card');
-  ov.style.transition='opacity .7s ease, transform .7s ease';
-  ov.style.opacity='0'; ov.style.transform='scale(1.3)';
-  setTimeout(()=>{ ov.style.display='none'; card.classList.add('visible'); startCountdown(); },700);
+// ── YouTube IFrame API ─────────────────────────────────────────
+let ytPlayer,ytReady=false,musicOn=false;
+(function(){
+  const s=document.createElement('script');
+  s.src='https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
+})();
+function onYouTubeIframeAPIReady(){
+  ytPlayer=new YT.Player('yt-player',{
+    height:'1',width:'1',videoId:YT_ID,
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:YT_ID,mute:0,rel:0},
+    events:{
+      onReady:()=>{ytReady=true;},
+      onStateChange:(e)=>{if(e.data===YT.PlayerState.ENDED)ytPlayer.seekTo(0);}
+    }
+  });
 }
 
-function startCountdown(){
-  const target=new Date('2026-10-30T06:00:00');
-  function tick(){
-    const diff=target-new Date();
-    if(diff<=0){['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id=>document.getElementById(id).textContent='00');return;}
-    const d=Math.floor(diff/86400000);
-    const h=Math.floor((diff%86400000)/3600000);
-    const m=Math.floor((diff%3600000)/60000);
-    const s=Math.floor((diff%60000)/1000);
-    document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
-    document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
-    document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
-    document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
-  }
-  tick(); setInterval(tick,1000);
-}
-
-function toggleEvent(el){
-  el.classList.toggle('expanded');
-  el.querySelector('.tl-toggle').textContent=el.classList.contains('expanded')?'▲ Close':'▼ Tap for details';
-}
-
-function submitRSVP(choice){
-  const name=document.getElementById('rsvp-name').value.trim();
-  const phone=document.getElementById('rsvp-phone').value.trim();
-  const guests=document.getElementById('rsvp-guests').value||'1';
-  if(!name){alert('Please enter your name · உங்கள் பெயரை உள்ளிடவும்');return;}
-  document.getElementById('rsvp-form').style.display='none';
-  const msg=document.getElementById('rsvp-success');
-  msg.classList.add('show');
-  if(choice==='yes'){
-    msg.innerHTML=`🎉 Thank you, ${name}!<br>We can't wait to celebrate with you!<br><small style="color:#ddd;font-family:'Noto Serif Tamil',serif;font-size:.8rem">நன்றி · உங்கள் வருகைக்கு காத்திருக்கிறோம் 🙏</small>`;
-    const waMsg=encodeURIComponent(`✅ RSVP Confirmed!\nName: ${name}\nGuests: ${guests}\nPhone: ${phone||'-'}\n\nI will attend Ramakrishnan & Sweatha's wedding on Oct 30, 2026! 🎊🌺`);
-    setTimeout(()=>window.open(`https://wa.me/919876543210?text=${waMsg}`,'_blank'),1200);
+// ── Toggle Music ───────────────────────────────────────────────
+function toggleMusic(){
+  if(!ytReady){return;}
+  const icon=document.getElementById('m-icon');
+  const waves=document.getElementById('m-waves');
+  if(musicOn){
+    ytPlayer.pauseVideo();
+    icon.style.display='block';waves.classList.remove('on');musicOn=false;
   } else {
-    msg.innerHTML=`💐 We understand, ${name}.<br>Thank you for letting us know.<br><small style="color:#ddd;font-family:'Noto Serif Tamil',serif;font-size:.8rem">நன்றி · உங்கள் வாழ்த்துக்கள் கோருகிறோம் 🙏</small>`;
+    ytPlayer.setVolume(45);ytPlayer.playVideo();
+    icon.style.display='none';waves.classList.add('on');musicOn=true;
   }
 }
 
+// ── Open card ──────────────────────────────────────────────────
+function openCard(){
+  const env=document.getElementById('env-screen');
+  const card=document.getElementById('card');
+  env.classList.add('open');
+  setTimeout(()=>{
+    env.style.display='none';
+    card.classList.add('show');
+    startCountdown();
+    initReveal();
+    // Start music after user interaction (respects browser autoplay policy)
+    setTimeout(()=>{
+      if(ytReady&&!musicOn){
+        ytPlayer.setVolume(40);ytPlayer.playVideo();
+        document.getElementById('m-icon').style.display='none';
+        document.getElementById('m-waves').classList.add('on');
+        musicOn=true;
+      }
+    },1200);
+  },900);
+}
+
+// ── Countdown ──────────────────────────────────────────────────
+function startCountdown(){
+  function tick(){
+    const diff=WED_DATE-new Date();
+    if(diff<=0){['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='00');return;}
+    document.getElementById('cd-d').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+    document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  }
+  tick();setInterval(tick,1000);
+}
+
+// ── Scroll Reveal ──────────────────────────────────────────────
+function initReveal(){
+  const els=document.querySelectorAll('.rv');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+  },{threshold:.12});
+  els.forEach(el=>obs.observe(el));
+}
+
+// ── Timeline ───────────────────────────────────────────────────
+function toggleTl(el){
+  el.classList.toggle('open');
+  el.querySelector('.tl-arr').textContent=el.classList.contains('open')?'▲ Close':'▼ Read more';
+}
+
+// ── RSVP Submit → Google Sheets ───────────────────────────────
+async function submitRSVP(choice){
+  const name  =document.getElementById('f-name').value.trim();
+  const phone =document.getElementById('f-phone').value.trim();
+  const guests=document.getElementById('f-guests').value;
+  const events=document.getElementById('f-events').value;
+  const msg   =document.getElementById('f-msg').value.trim();
+  if(!name){alert('Please enter your name · உங்கள் பெயரை உள்ளிடவும்');return;}
+
+  document.querySelectorAll('.btn-y,.btn-n').forEach(b=>b.classList.add('busy'));
+  const sav=document.getElementById('saving');sav.style.display='block';
+
+  const data={
+    name, phone, guests:guests||'-', events:events||'-',
+    message:msg, attending:choice==='yes'?'Yes ✅':'No ❌',
+    timestamp:new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}),
+    submittedAt:new Date().toISOString()
+  };
+
+  // ── Save to Google Sheets ──
+  if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
+    try{
+      await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    }catch(e){console.warn('Sheet:',e);}
+  }
+
+  sav.style.display='none';
+  document.getElementById('rsvp-form').style.display='none';
+  const done=document.getElementById('rsvp-done');done.classList.add('show');
+
+  if(choice==='yes'){
+    done.innerHTML=`🎉 Thank you, ${name}!<br>We're so excited to celebrate with you!<br>
+      <small style="color:#aaa;font-family:'Noto Serif Tamil',serif;font-size:.85rem;display:block;margin-top:10px">
+        நன்றி · உங்கள் வருகைக்காக காத்திருக்கிறோம் 🙏
+      </small>`;
+    launchConfetti();
+    const waTxt=encodeURIComponent(`✅ *RSVP Confirmed!*\n\nName: ${name}\nGuests: ${guests||'1'}\nEvents: ${events||'Wedding'}\nPhone: ${phone||'-'}\n\nI will attend *Ramakrishnan & Sweatha's* Big Day! 🎊🌺`);
+    setTimeout(()=>window.open(`https://wa.me/${WA_NUMBER}?text=${waTxt}`,'_blank'),1600);
+  } else {
+    done.innerHTML=`💐 We understand, ${name}.<br>Thank you for letting us know.<br>
+      <small style="color:#aaa;font-family:'Noto Serif Tamil',serif;font-size:.85rem;display:block;margin-top:10px">
+        நன்றி · உங்கள் வாழ்த்துக்கள் கோருகிறோம் 🙏
+      </small>`;
+  }
+}
+
+// ── Confetti burst ─────────────────────────────────────────────
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  canvas.style.display='block';
+  const cols=['#c9a84c','#f4a328','#ff6b6b','#7b1c2e','#ffffff','#2d6a2d','#ffd700','#ff9aa2'];
+  const bits=Array.from({length:220},()=>({
+    x:Math.random()*canvas.width,y:canvas.height*Math.random()*.5-100,
+    w:5+Math.random()*9,h:3+Math.random()*5,
+    col:cols[Math.floor(Math.random()*cols.length)],
+    spin:Math.random()*.4-.2,vy:2+Math.random()*5,vx:Math.random()*3-1.5,
+    angle:Math.random()*Math.PI*2,op:1
+  }));
+  let f=0;
+  (function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    bits.forEach(b=>{
+      b.y+=b.vy;b.x+=b.vx;b.angle+=b.spin;b.op-=.004;
+      if(b.op<=0)return;
+      ctx.save();ctx.globalAlpha=b.op;ctx.fillStyle=b.col;
+      ctx.translate(b.x,b.y);ctx.rotate(b.angle);
+      ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h);ctx.restore();
+    });
+    if(++f<260)requestAnimationFrame(draw);
+    else canvas.style.display='none';
+  })();
+}
+
+// ── WhatsApp Share ─────────────────────────────────────────────
 function shareWA(e){
   e.preventDefault();
-  const text=encodeURIComponent(`💍 *Wedding Invitation* 💍\n\nYou are cordially invited to the wedding of\n\n🌺 *Ramakrishnan* & *Sweatha* 🌺\n\n📅 *Wedding Date:* Friday, October 30, 2026\n⏰ *Muhurtham:* 6:00 AM – 7:30 AM\n📍 *Venue:* Mailam Murugan Temple, Villupuram\n\n💒 *Reception:* Sunday, November 1, 2026\n⏰ *Time:* 6:00 PM – 10:30 PM\n📍 The Palace House, Injambakkam, Chennai\n\n🙏 Your presence will bless us\n*திருமண அழைப்பிதழ்* — Krishnamoorthi & Elumalai Families\n\n🔗 Open Digital Invite:\n${window.location.href}`);
-  window.open(`https://wa.me/?text=${text}`,'_blank');
+  const txt=encodeURIComponent(
+    `💍 *Wedding Invitation* 💍\n\n`+
+    `You are warmly invited to the wedding of\n\n`+
+    `🌺 *Ramakrishnan* weds *Sweatha* 🌺\n\n`+
+    `🕉️ *Wedding Ceremony*\n📅 Friday, October 30, 2026\n`+
+    `⏰ Muhurtham: 6:00 AM – 7:30 AM\n📍 Mailam Murugan Temple, Villupuram\n\n`+
+    `💒 *Reception Night*\n📅 Sunday, November 1, 2026\n`+
+    `⏰ 6:00 PM – 10:30 PM\n📍 The Palace House, Injambakkam, Chennai\n\n`+
+    `🙏 Your presence & blessings mean the world to us\n`+
+    `— Krishnamoorthi & Elumalai Families —\n\n`+
+    `🔗 Digital Invite:\n${window.location.href}`
+  );
+  window.open(`https://wa.me/?text=${txt}`,'_blank');
 }
 
+// ── Copy Link ──────────────────────────────────────────────────
 function copyLink(){
   const url=window.location.href;
-  if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>alert('✅ Invite link copied! Share it with your loved ones. 🎊'));
+  if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>alert('✅ Link copied! Share it with your loved ones 🎊'));
   else prompt('Copy this link:',url);
-}
-
-let playing=false,audioCtx=null,gainNode=null;
-function toggleMusic(){
-  const btn=document.getElementById('music-btn');
-  if(!audioCtx){
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    // Create a gentle harmonious tone
-    [196,246,294,392].forEach((freq,i)=>{
-      const osc=ctx.createOscillator();
-      const g=ctx.createGain();
-      osc.type='sine'; osc.frequency.value=freq;
-      g.gain.value=0.015;
-      osc.connect(g); g.connect(ctx.destination);
-      osc.start(ctx.currentTime+i*0.05);
-    });
-    gainNode={gain:{value:0.015}};
-    audioCtx=ctx; playing=true; btn.textContent='🎶'; return;
-  }
-  playing=!playing;
-  btn.textContent=playing?'🎶':'🎵';
 }
 </script>
 </body>
