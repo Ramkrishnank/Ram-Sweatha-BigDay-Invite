@@ -1,111 +1,113 @@
 /**
  * ══════════════════════════════════════════════════════════════
- *  Ram & Sweatha Wedding — RSVP Google Sheets Script
- *  Paste this entire file into Google Apps Script and deploy
+ *  Ram & Sweatha Wedding — RSVP → Google Sheets (STANDALONE SAFE)
  * ══════════════════════════════════════════════════════════════
  *
- * SETUP STEPS:
- *  1. Go to https://script.google.com  → New Project
- *  2. Delete any existing code and paste this entire file
- *  3. Click "Save" (Ctrl+S), name it "Wedding RSVP"
- *  4. Click "Deploy" → "New Deployment"
- *  5. Type = "Web App"
- *  6. Execute as = "Me"
- *  7. Who has access = "Anyone"
- *  8. Click "Deploy" → copy the Web App URL
- *  9. Paste that URL into index.html at:
- *         const SHEET_URL = 'PASTE_URL_HERE';
- * 10. Redeploy index.html to GitHub Pages
+ *  ⚡ WHY YOU COULDN'T FIND YOUR RESPONSES:
+ *  A standalone Apps Script has NO attached spreadsheet, so the old
+ *  getActiveSpreadsheet() returned null and nothing was ever saved.
+ *  This version AUTO-CREATES a spreadsheet in YOUR Google Drive and
+ *  remembers it — so every RSVP is stored and easy to find.
+ *
+ *  ── SETUP (do this once) ──────────────────────────────────────
+ *  1. Go to https://script.google.com  ->  open your project
+ *  2. Delete ALL old code, paste THIS entire file, click Save
+ *  3. In the function dropdown (top toolbar) select:  setup
+ *  4. Click Run  ->  approve the permissions popup
+ *  5. Open "Execution log" — it prints your NEW SHEET URL. Open it!
+ *  6. Deploy -> Manage deployments -> Edit (pencil) ->
+ *        Version: "New version"  ->  Deploy   (keeps same /exec URL)
+ *     (If first time: Deploy -> New deployment -> Web app ->
+ *        Execute as: Me · Access: Anyone -> Deploy)
+ *  7. Done — submit a test RSVP on the invite and refresh the sheet.
  * ══════════════════════════════════════════════════════════════
  */
 
-// ── Handle RSVP POST from wedding invite ──────────────────────
+const SHEET_NAME = 'Ram & Sweatha — RSVP Responses';
+const TAB_NAME   = 'RSVP Responses';
+const PROP_KEY   = 'RSVP_SPREADSHEET_ID';
+
+// ── Get (or create) the spreadsheet, remembering its ID ────────
+function getSpreadsheet() {
+  const props = PropertiesService.getScriptProperties();
+  let id = props.getProperty(PROP_KEY);
+
+  if (id) {
+    try { return SpreadsheetApp.openById(id); }
+    catch (e) { /* deleted — fall through and make a new one */ }
+  }
+
+  const ss = SpreadsheetApp.create(SHEET_NAME);
+  props.setProperty(PROP_KEY, ss.getId());
+  buildHeaders_(ss);
+  return ss;
+}
+
+// ── Build a styled header row + tab ────────────────────────────
+function buildHeaders_(ss) {
+  let sheet = ss.getSheets()[0];
+  sheet.setName(TAB_NAME);
+  const headers = ['Timestamp (IST)', 'Name', 'Phone', 'Guests',
+    'Events Attending', 'Attending?', 'Message / Blessings', 'Submitted At (UTC)'];
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers])
+       .setBackground('#7b1c2e').setFontColor('#ffffff')
+       .setFontWeight('bold').setFontSize(11);
+  sheet.setFrozenRows(1);
+  const widths = [160, 150, 130, 70, 150, 100, 260, 180];
+  widths.forEach(function (w, i) { sheet.setColumnWidth(i + 1, w); });
+  return sheet;
+}
+
+// ── RUN THIS ONCE: prints your sheet URL in the log ────────────
+function setup() {
+  const ss = getSpreadsheet();
+  Logger.log('════════════════════════════════════════');
+  Logger.log('Your RSVP responses are saved here:');
+  Logger.log(ss.getUrl());
+  Logger.log('════════════════════════════════════════');
+  return ss.getUrl();
+}
+
+// ── Handle RSVP POST from the invite ───────────────────────────
 function doPost(e) {
   try {
-    const ss    = SpreadsheetApp.getActiveSpreadsheet();
-    let sheet   = ss.getSheetByName('RSVP Responses');
-
-    // Create sheet with headers if it doesn't exist
-    if (!sheet) {
-      sheet = ss.insertSheet('RSVP Responses');
-      const headers = [
-        'Timestamp (IST)', 'Name', 'Phone', 'Guests',
-        'Events Attending', 'Attending?', 'Message / Blessings', 'Submitted At (UTC)'
-      ];
-      sheet.appendRow(headers);
-
-      // Style the header row
-      const hdrRange = sheet.getRange(1, 1, 1, headers.length);
-      hdrRange.setBackground('#7b1c2e')
-              .setFontColor('#ffffff')
-              .setFontWeight('bold')
-              .setFontSize(11);
-      sheet.setFrozenRows(1);
-      sheet.setColumnWidth(1, 160);
-      sheet.setColumnWidth(2, 140);
-      sheet.setColumnWidth(3, 130);
-      sheet.setColumnWidth(4, 80);
-      sheet.setColumnWidth(5, 170);
-      sheet.setColumnWidth(6, 100);
-      sheet.setColumnWidth(7, 250);
-      sheet.setColumnWidth(8, 180);
-    }
-
-    // Parse incoming data
+    const ss   = getSpreadsheet();
+    const sheet = ss.getSheetByName(TAB_NAME) || buildHeaders_(ss);
     const data = JSON.parse(e.postData.contents);
 
-    // Append new RSVP row
     sheet.appendRow([
-      data.timestamp    || new Date().toLocaleString(),
-      data.name         || '',
-      data.phone        || '',
-      data.guests       || '',
-      data.events       || '',
-      data.attending    || '',
-      data.message      || '',
-      data.submittedAt  || new Date().toISOString()
+      data.timestamp   || new Date().toLocaleString(),
+      data.name        || '',
+      data.phone       || '',
+      data.guests      || '',
+      data.events      || '',
+      data.attending   || '',
+      data.message     || '',
+      data.submittedAt || new Date().toISOString()
     ]);
 
-    // Color YES rows green, NO rows red
-    const lastRow  = sheet.getLastRow();
-    const attending = (data.attending || '').toLowerCase();
-    if (attending.includes('yes')) {
-      sheet.getRange(lastRow, 1, 1, 8).setBackground('#e8f5e9');
-    } else if (attending.includes('no')) {
-      sheet.getRange(lastRow, 1, 1, 8).setBackground('#fce4ec');
-    }
+    const row = sheet.getLastRow();
+    const att = (data.attending || '').toLowerCase();
+    if (att.indexOf('yes') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#e8f5e9');
+    else if (att.indexOf('no') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#fce4ec');
 
-    // Auto-resize columns
-    sheet.autoResizeColumns(1, 8);
-
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'success', message: 'RSVP saved!' }))
-      .setMimeType(ContentService.MimeType.JSON);
-
+    return json_({ status: 'success' });
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return json_({ status: 'error', message: err.toString() });
   }
 }
 
-// ── Health check GET ──────────────────────────────────────────
-function doGet(e) {
-  return ContentService
-    .createTextOutput(JSON.stringify({
-      status: 'running',
-      message: 'Ram & Sweatha Wedding RSVP endpoint is active! 🎊'
-    }))
-    .setMimeType(ContentService.MimeType.JSON);
+// ── Visiting the /exec URL shows a link to your sheet ──────────
+function doGet() {
+  const url = getSpreadsheet().getUrl();
+  return HtmlService.createHtmlOutput(
+    '<h2>Ram &amp; Sweatha RSVP is running!</h2>' +
+    '<p>Your responses are saved in this Google Sheet:</p>' +
+    '<p><a href="' + url + '" target="_blank">' + url + '</a></p>'
+  );
 }
 
-// ── Optional: Email notification on new RSVP ─────────────────
-// Uncomment and set your email to get notified on every RSVP
-/*
-function sendNotification(data) {
-  const email   = 'YOUR_EMAIL@gmail.com';
-  const subject = `💍 New RSVP — ${data.name} (${data.attending})`;
-  const body    = `New RSVP received!\n\nName: ${data.name}\nPhone: ${data.phone}\nGuests: ${data.guests}\nEvents: ${data.events}\nAttending: ${data.attending}\nMessage: ${data.message}\nTime: ${data.timestamp}`;
-  MailApp.sendEmail(email, subject, body);
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+                       .setMimeType(ContentService.MimeType.JSON);
 }
-*/

@@ -88,25 +88,35 @@
     .div span{color:var(--gold);font-size:1.1rem;}
 
     /* ── Couple ── */
-    .couple{background:var(--cream);padding:28px 20px 24px;text-align:center;position:relative;}
+    .couple{background:linear-gradient(180deg,var(--cream),#fff9ec,var(--cream));padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden;}
     .couple::before,.couple::after{content:'— ✦ ❧ ✦ —';position:absolute;left:50%;transform:translateX(-50%);color:var(--gold);font-size:.7rem;letter-spacing:6px;opacity:.5;}
     .couple::before{top:8px}.couple::after{bottom:8px}
+    .spark{position:absolute;color:var(--gold);font-size:.8rem;opacity:0;pointer-events:none;animation:sparkle 3s ease-in-out infinite;}
+    @keyframes sparkle{0%,100%{opacity:0;transform:scale(.4) rotate(0deg)}50%{opacity:.9;transform:scale(1.2) rotate(180deg)}}
     .prelude{color:var(--maroon);font-size:.72rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;}
     .intro{color:#5a3a00;font-size:1rem;font-style:italic;line-height:1.7;margin-bottom:22px;}
-    .photos-row{display:flex;align-items:center;justify-content:center;gap:14px;margin:8px 0;}
+    .photos-row{display:flex;align-items:center;justify-content:center;gap:14px;margin:8px 0;position:relative;z-index:2;}
     .frame{
-      width:115px;height:115px;border-radius:50%;
-      border:3px solid var(--gold);
-      background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.25));
-      display:flex;align-items:center;justify-content:center;font-size:2.8rem;
-      box-shadow:0 0 25px rgba(201,168,76,.3),inset 0 0 15px rgba(201,168,76,.05);
-      transition:transform .3s;position:relative;
+      width:120px;height:120px;border-radius:50%;
+      border:2px solid var(--gold);
+      background:radial-gradient(circle at 35% 30%,rgba(201,168,76,.30) 0%,rgba(122,28,46,.20) 55%,rgba(74,14,28,.35) 100%);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 0 40px rgba(201,168,76,.35),0 8px 30px rgba(0,0,0,.25),inset 0 0 22px rgba(201,168,76,.1);
+      transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s;
+      position:relative;
     }
-    .frame:hover{transform:scale(1.07);}
-    .frame::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1.5px dashed rgba(201,168,76,.35);animation:spin 12s linear infinite;}
+    .frame:hover{transform:scale(1.08) rotate(2deg);box-shadow:0 0 60px rgba(201,168,76,.6),0 12px 40px rgba(0,0,0,.3);}
+    /* rotating dashed ring */
+    .frame::after{content:'';position:absolute;inset:-7px;border-radius:50%;border:1.5px dashed rgba(201,168,76,.45);animation:spin 16s linear infinite;}
+    /* pulsing inner ring */
+    .frame::before{content:'';position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(201,168,76,.3);animation:ringPulse 2.5s ease-in-out infinite;}
+    @keyframes ringPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.9;transform:scale(1.05)}}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .g-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;color:var(--maroon);line-height:1.1;margin-top:10px;}
-    .b-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;color:var(--dk-gold);line-height:1.1;margin-top:10px;}
+    .monogram{font-family:'Cinzel Decorative',cursive;font-size:3.2rem;font-weight:700;background:linear-gradient(135deg,#f5e6b3,#c9a84c 45%,#9a6f00 55%,#f5e6b3);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 8px rgba(154,111,0,.2);animation:monoShine 3s ease-in-out infinite;line-height:1;}
+    @keyframes monoShine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+    .g-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;line-height:1.1;margin-top:12px;background:linear-gradient(100deg,#7b1c2e 20%,#c9a84c 45%,#7b1c2e 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;}
+    .b-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;line-height:1.1;margin-top:12px;background:linear-gradient(100deg,#9a6f00 20%,#f4a328 45%,#9a6f00 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;animation-delay:.5s;}
+    @keyframes nameShine{to{background-position:200% center}}
     .n-tamil{font-family:'Noto Serif Tamil',serif;font-size:.9rem;color:#888;margin:3px 0;}
     .n-parents{font-size:.75rem;color:#aaa;font-style:italic;margin-top:3px;line-height:1.5;}
     .and-col{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 8px;}
@@ -334,11 +344,16 @@
 
   <!-- Couple -->
   <div class="couple rv">
+    <span class="spark" style="top:20%;left:12%;animation-delay:0s">✦</span>
+    <span class="spark" style="top:30%;right:14%;animation-delay:.6s">✧</span>
+    <span class="spark" style="top:55%;left:8%;animation-delay:1.2s">✦</span>
+    <span class="spark" style="top:60%;right:9%;animation-delay:1.8s">✧</span>
+    <span class="spark" style="top:42%;left:48%;animation-delay:2.2s">✦</span>
     <div class="prelude">— With Blessings of Lord Murugan —</div>
     <div class="intro">Together with their families, we joyfully invite you<br>to witness and bless the sacred union of</div>
     <div class="photos-row">
       <div style="text-align:center">
-        <div class="frame">🤵</div>
+        <div class="frame"><span class="monogram">R</span></div>
         <div class="g-name">Ramakrishnan</div>
         <div class="n-tamil">ராமகிருஷ்ணன்</div>
         <div class="n-parents">S/o Thiru. Krishnamoorthi<br>&amp; Thirumathi. Rajeshwari</div>
@@ -348,7 +363,7 @@
         <div class="weds-txt">weds</div>
       </div>
       <div style="text-align:center">
-        <div class="frame">👰</div>
+        <div class="frame"><span class="monogram">S</span></div>
         <div class="b-name">Sweatha</div>
         <div class="n-tamil">ஸ்வேதா</div>
         <div class="n-parents">D/o Thiru. Elumalai<br>&amp; Thirumathi. Jayanthi</div>
