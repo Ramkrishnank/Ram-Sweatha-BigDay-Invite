@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tamil Wedding Invitation – Ramakrishnan & Sweatha</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+Tamil:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --dark-gold: #9a6f00;
+      --maroon: #7b1c2e;
+      --cream: #fdf6e3;
+      --saffron: #f4a328;
+      --light-gold: #f5e6b3;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#1a0a00;
+      display:flex; justify-content:center; align-items:center;
+      min-height:100vh;
+      font-family:'Playfair Display',serif;
+      overflow-x:hidden;
+    }
+
+    /* ─ Particles ─ */
+    .particles { position:fixed; inset:0; pointer-events:none; z-index:0; }
+    .particle {
+      position:absolute; border-radius:50% 0 50% 0;
+      animation:floatUp linear infinite; opacity:0;
+    }
+    @keyframes floatUp {
+      0%   { transform:translateY(100vh) rotate(0deg); opacity:0; }
+      10%  { opacity:1; }
+      90%  { opacity:.8; }
+      100% { transform:translateY(-10vh) rotate(360deg); opacity:0; }
+    }
+
+    /* ─ Envelope ─ */
+    #envelope-overlay {
+      position:fixed; inset:0; z-index:100;
+      background:radial-gradient(ellipse at center,#3d1a00,#1a0800);
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      cursor:pointer;
+    }
+    .env-wrap {
+      width:280px; height:200px;
+      filter:drop-shadow(0 0 30px rgba(201,168,76,.6));
+      animation:envFloat 2s ease-in-out infinite;
+    }
+    @keyframes envFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .tap-text {
+      margin-top:30px; color:var(--gold);
+      font-family:'Dancing Script',cursive; font-size:1.5rem;
+      animation:pulse 1.5s ease-in-out infinite; text-align:center;
+    }
+    .tamil-tap { color:#f5e6b3; font-family:'Noto Serif Tamil',serif; font-size:1rem; margin-top:6px; opacity:.8; text-align:center; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.05)} }
+
+    /* ─ Card ─ */
+    #card {
+      position:relative; z-index:10;
+      width:100%; max-width:480px;
+      background:var(--cream);
+      border:3px solid var(--gold);
+      box-shadow:0 0 60px rgba(201,168,76,.4);
+      overflow:hidden; display:none;
+    }
+    #card.visible { display:block; animation:cardReveal 1s ease forwards; }
+    @keyframes cardReveal { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+
+    .gold-border {
+      height:14px;
+      background:repeating-linear-gradient(90deg,var(--gold) 0px,var(--dark-gold) 10px,var(--saffron) 20px,var(--dark-gold) 30px,var(--gold) 40px);
+    }
+
+    /* ─ Header ─ */
+    .kolam-header {
+      background:linear-gradient(135deg,var(--maroon),#5a0f1e 50%,var(--maroon));
+      padding:20px 16px 10px; text-align:center;
+    }
+    .kolam-svg { width:100%; height:70px; opacity:.55; }
+    .om-symbol {
+      font-size:2.2rem; color:var(--gold); display:block; margin-bottom:4px;
+      animation:glowPulse 2s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%,100%{text-shadow:0 0 20px rgba(201,168,76,.8)}
+      50%{text-shadow:0 0 40px rgba(201,168,76,1),0 0 60px rgba(244,163,40,.5)}
+    }
+    .tamil-blessing { font-family:'Noto Serif Tamil',serif; color:var(--light-gold); font-size:1rem; letter-spacing:2px; margin-bottom:8px; }
+
+    .flower-divider {
+      display:flex; align-items:center; justify-content:center;
+      gap:8px; padding:10px 0;
+    }
+    .flower-divider::before,.flower-divider::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(to right,transparent,var(--gold),transparent);
+    }
+
+    .card-body { padding:0 24px; background:var(--cream); }
+
+    .invite-header { text-align:center; padding:20px 0 10px; }
+    .we-request { color:var(--maroon); font-size:.78rem; letter-spacing:3px; text-transform:uppercase; }
+    .pleasure { color:#5a3a00; font-size:.9rem; font-style:italic; margin:8px 0; line-height:1.6; }
+
+    /* ─ Couple ─ */
+    .couple-section {
+      text-align:center; padding:20px 10px;
+      background:linear-gradient(180deg,transparent,rgba(201,168,76,.08),transparent);
+      border-radius:12px; margin:8px 0;
+    }
+    .groom-name,.bride-name {
+      font-family:'Cinzel Decorative',cursive; font-size:1.9rem; font-weight:700; line-height:1.2;
+      animation:shimmer 3s ease-in-out infinite;
+    }
+    .groom-name { color:var(--maroon); }
+    .bride-name { color:var(--dark-gold); }
+    @keyframes shimmer { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.25)} }
+    .groom-tamil,.bride-tamil { font-family:'Noto Serif Tamil',serif; font-size:.95rem; color:#666; margin-top:3px; }
+    .groom-parents,.bride-parents { font-size:.78rem; color:#888; font-style:italic; margin-top:4px; }
+    .and-symbol {
+      font-family:'Dancing Script',cursive; font-size:3.5rem; color:var(--gold); display:block;
+      margin:12px 0; text-shadow:0 2px 8px rgba(201,168,76,.4);
+      animation:heartbeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartbeat { 0%,100%{transform:scale(1)} 25%{transform:scale(1.12)} 75%{transform:scale(1.06)} }
+
+    /* ─ Events section ─ */
+    .event-section {
+      background:linear-gradient(135deg,var(--maroon),#6b1525);
+      margin:12px -24px; padding:24px 28px;
+    }
+    .event-title {
+      font-family:'Cinzel Decorative',cursive; color:var(--gold);
+      text-align:center; font-size:1rem; margin-bottom:16px; letter-spacing:2px;
+    }
+    .event-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .event-item {
+      background:rgba(255,255,255,.08); border:1px solid rgba(201,168,76,.4);
+      border-radius:10px; padding:12px; text-align:center;
+      transition:transform .3s,background .3s; cursor:default;
+    }
+    .event-item:hover { transform:translateY(-3px); background:rgba(255,255,255,.16); }
+    .event-item .icon { font-size:1.4rem; display:block; margin-bottom:4px; }
+    .event-item .label { font-size:.58rem; color:var(--light-gold); letter-spacing:2px; text-transform:uppercase; }
+    .event-item .value { font-size:.9rem; color:#fff; font-weight:600; margin-top:3px; }
+    .event-item .value-tamil { font-family:'Noto Serif Tamil',serif; font-size:.72rem; color:#ddd; margin-top:2px; }
+    .muhurtham-box {
+      grid-column:1/-1; border:2px solid var(--gold);
+      background:rgba(201,168,76,.12); border-radius:12px; padding:14px; text-align:center;
+    }
+    .muh-label { font-family:'Noto Serif Tamil',serif; color:var(--light-gold); font-size:.88rem; margin-bottom:5px; }
+    .muh-time { font-family:'Cinzel Decorative',cursive; color:var(--gold); font-size:1.3rem; }
+    .muh-sub { color:#ccc; font-size:.72rem; margin-top:4px; font-style:italic; }
+
+    /* ─ Countdown ─ */
+    .countdown-section { padding:20px 0; text-align:center; }
+    .countdown-title { color:var(--maroon); font-size:.72rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+    .countdown-boxes { display:flex; justify-content:center; gap:12px; }
+    .cd-box {
+      background:linear-gradient(135deg,var(--maroon),#5a0f1e);
+      border:2px solid var(--gold); border-radius:10px;
+      width:64px; height:64px; display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      transition:transform .3s; cursor:default;
+    }
+    .cd-box:hover { transform:scale(1.08); }
+    .cd-num { font-family:'Cinzel Decorative',cursive; font-size:1.4rem; color:var(--gold); line-height:1; }
+    .cd-label { font-size:.52rem; color:#ddd; letter-spacing:1px; margin-top:3px; text-transform:uppercase; }
+
+    /* ─ Venue ─ */
+    .venue-section { padding:4px 0 16px; text-align:center; }
+    .venue-name { font-family:'Cinzel Decorative',cursive; color:var(--maroon); font-size:1rem; margin-bottom:6px; }
+    .venue-address { font-size:.8rem; color:#666; font-style:italic; margin-bottom:12px; line-height:1.6; }
+    .btn-map {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 24px;
+      background:linear-gradient(135deg,var(--maroon),#9a1a2e);
+      color:#fff; border:none; border-radius:30px;
+      font-size:.85rem; cursor:pointer; text-decoration:none;
+      transition:transform .3s,box-shadow .3s;
+      box-shadow:0 4px 15px rgba(122,28,46,.4);
+    }
+    .btn-map:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(122,28,46,.6); }
+
+    /* ─ Timeline ─ */
+    .events-timeline { padding:10px 0 20px; }
+    .timeline-title { font-family:'Cinzel Decorative',cursive; color:var(--maroon); text-align:center; font-size:.9rem; margin-bottom:16px; letter-spacing:1px; }
+    .timeline-item {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:10px 8px; border-bottom:1px dashed rgba(201,168,76,.3);
+      cursor:pointer; border-radius:8px; transition:background .2s;
+    }
+    .timeline-item:hover { background:rgba(201,168,76,.08); }
+    .tl-icon {
+      width:40px; height:40px;
+      background:linear-gradient(135deg,var(--gold),var(--saffron));
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0; box-shadow:0 2px 8px rgba(201,168,76,.4);
+    }
+    .tl-content { flex:1; }
+    .tl-name { color:var(--maroon); font-weight:600; font-size:.9rem; }
+    .tl-name-tamil { font-family:'Noto Serif Tamil',serif; color:#666; font-size:.75rem; }
+    .tl-time { color:var(--dark-gold); font-size:.75rem; margin-top:2px; }
+    .tl-desc { color:#888; font-size:.75rem; font-style:italic; margin-top:5px; display:none; line-height:1.5; }
+    .timeline-item.expanded .tl-desc { display:block; }
+    .tl-toggle { color:var(--gold); font-size:.68rem; margin-top:3px; }
+
+    /* ─ RSVP ─ */
+    .rsvp-section {
+      background:linear-gradient(135deg,#1a0800,#3d1500);
+      margin:0 -24px; padding:28px; text-align:center;
+    }
+    .rsvp-title { font-family:'Cinzel Decorative',cursive; color:var(--gold); font-size:1.1rem; margin-bottom:6px; }
+    .rsvp-subtitle { color:#ccc; font-size:.78rem; margin-bottom:20px; font-style:italic; }
+    .rsvp-form { display:flex; flex-direction:column; gap:10px; }
+    .rsvp-form input,.rsvp-form select {
+      padding:10px 16px; background:rgba(255,255,255,.08);
+      border:1px solid rgba(201,168,76,.4); border-radius:8px;
+      color:#fff; font-size:.9rem; outline:none; transition:border-color .3s;
+    }
+    .rsvp-form input::placeholder { color:#aaa; }
+    .rsvp-form input:focus,.rsvp-form select:focus { border-color:var(--gold); }
+    .rsvp-form select option { background:#3d1500; color:#fff; }
+    .rsvp-btns { display:flex; gap:10px; }
+    .btn-rsvp { flex:1; padding:12px; border:2px solid var(--gold); border-radius:8px; font-size:.88rem; cursor:pointer; transition:all .3s; }
+    .btn-yes { background:var(--gold); color:#1a0800; font-weight:700; }
+    .btn-yes:hover { background:var(--saffron); transform:scale(1.03); }
+    .btn-no  { background:transparent; color:var(--gold); }
+    .btn-no:hover { background:rgba(201,168,76,.1); }
+    .rsvp-success { display:none; color:var(--gold); font-family:'Dancing Script',cursive; font-size:1.4rem; padding:10px 0; line-height:1.7; }
+    .rsvp-success.show { display:block; animation:fadeIn .8s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ─ Share ─ */
+    .share-section { padding:20px 0 10px; text-align:center; }
+    .share-title { color:var(--maroon); font-size:.72rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+    .share-btns { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+    .btn-share {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:10px 20px; border-radius:30px; border:none; cursor:pointer;
+      font-size:.85rem; font-weight:600; transition:transform .3s,box-shadow .3s; text-decoration:none;
+    }
+    .btn-wa { background:#25D366; color:#fff; box-shadow:0 4px 15px rgba(37,211,102,.3); }
+    .btn-wa:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(37,211,102,.5); }
+    .btn-copy { background:var(--gold); color:#1a0800; box-shadow:0 4px 15px rgba(201,168,76,.3); }
+    .btn-copy:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(201,168,76,.5); }
+
+    /* ─ Footer ─ */
+    .card-footer { background:var(--maroon); padding:18px; text-align:center; }
+    .footer-blessing { font-family:'Noto Serif Tamil',serif; color:var(--light-gold); font-size:.92rem; margin-bottom:6px; }
+    .footer-sub { color:rgba(245,230,179,.6); font-size:.68rem; letter-spacing:2px; }
+
+    /* ─ Music btn ─ */
+    .music-btn {
+      position:fixed; bottom:20px; right:20px; z-index:50;
+      width:50px; height:50px; background:var(--gold);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:1.3rem; border:none;
+      box-shadow:0 4px 15px rgba(201,168,76,.5);
+      transition:transform .3s;
+    }
+    .music-btn:hover { transform:scale(1.12); }
+
+    @media(max-width:480px){
+      .groom-name,.bride-name{font-size:1.5rem}
+      .and-symbol{font-size:2.8rem}
+      .cd-box{width:54px;height:54px}
+      .cd-num{font-size:1.1rem}
+    }
+  </style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<!-- ══ Envelope Overlay ══ -->
+<div id="envelope-overlay" onclick="openInvite()">
+  <div class="env-wrap">
+    <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="eg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#7b1c2e"/>
+          <stop offset="100%" style="stop-color:#4a0e1c"/>
+        </linearGradient>
+      </defs>
+      <rect x="5" y="40" width="270" height="155" rx="8" fill="url(#eg)" stroke="#c9a84c" stroke-width="2"/>
+      <polygon points="5,40 140,130 275,40" fill="#9a2035" stroke="#c9a84c" stroke-width="1.5"/>
+      <polygon points="5,40 5,195 105,120" fill="#6a1025" stroke="#c9a84c" stroke-width="1"/>
+      <polygon points="275,40 275,195 175,120" fill="#6a1025" stroke="#c9a84c" stroke-width="1"/>
+      <circle cx="140" cy="118" r="24" fill="#c9a84c" stroke="#9a6f00" stroke-width="2.5"/>
+      <circle cx="140" cy="118" r="19" fill="none" stroke="#9a6f00" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="140" y="126" text-anchor="middle" font-size="22" fill="#5a1020" font-family="serif">ॐ</text>
+      <text x="28" y="78" font-size="14" fill="#c9a84c" opacity="0.7">✦</text>
+      <text x="240" y="78" font-size="14" fill="#c9a84c" opacity="0.7">✦</text>
+      <text x="45" y="172" font-size="10" fill="#c9a84c" opacity="0.5">✿</text>
+      <text x="220" y="172" font-size="10" fill="#c9a84c" opacity="0.5">✿</text>
+      <path d="M20 152 Q30 138 40 152 Q30 166 20 152" fill="#2d6a2d" opacity="0.5"/>
+      <path d="M240 152 Q250 138 260 152 Q250 166 240 152" fill="#2d6a2d" opacity="0.5"/>
+    </svg>
+  </div>
+  <div class="tap-text">✨ Tap to Open Your Invitation ✨</div>
+  <div class="tamil-tap">உங்கள் அழைப்பிதழை திறக்க தொடவும்</div>
+</div>
+
+<!-- ══ Main Card ══ -->
+<div id="card">
+  <div class="gold-border"></div>
+
+  <div class="kolam-header">
+    <svg class="kolam-svg" viewBox="0 0 480 70" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.7">
+        <circle cx="60" cy="35" r="12"/><circle cx="60" cy="35" r="5"/>
+        <line x1="60" y1="17" x2="60" y2="23"/><line x1="60" y1="47" x2="60" y2="53"/>
+        <line x1="42" y1="35" x2="48" y2="35"/><line x1="72" y1="35" x2="78" y2="35"/>
+        <line x1="47" y1="22" x2="52" y2="27"/><line x1="68" y1="43" x2="73" y2="48"/>
+        <line x1="73" y1="22" x2="68" y2="27"/><line x1="52" y1="43" x2="47" y2="48"/>
+        <ellipse cx="240" cy="46" rx="20" ry="8"/>
+        <rect x="232" y="18" width="16" height="28" rx="3"/>
+        <line x1="240" y1="8" x2="240" y2="18"/>
+        <circle cx="240" cy="6" r="4" fill="#c9a84c"/>
+        <line x1="218" y1="30" x2="232" y2="30"/><line x1="248" y1="30" x2="262" y2="30"/>
+        <path d="M220 30 Q215 20 222 15"/><path d="M260 30 Q265 20 258 15"/>
+        <circle cx="420" cy="35" r="12"/><circle cx="420" cy="35" r="5"/>
+        <line x1="420" y1="17" x2="420" y2="23"/><line x1="420" y1="47" x2="420" y2="53"/>
+        <line x1="402" y1="35" x2="408" y2="35"/><line x1="432" y1="35" x2="438" y2="35"/>
+        <line x1="407" y1="22" x2="412" y2="27"/><line x1="428" y1="43" x2="433" y2="48"/>
+        <line x1="433" y1="22" x2="428" y2="27"/><line x1="412" y1="43" x2="407" y2="48"/>
+        <path d="M80 35 Q160 10 240 35 Q320 60 400 35" stroke-dasharray="4,4"/>
+      </g>
+    </svg>
+    <span class="om-symbol">ॐ</span>
+    <div class="tamil-blessing">திருமண அழைப்பிதழ்</div>
+    <div class="flower-divider">🌸 🪔 🌸</div>
+  </div>
+
+  <div class="card-body">
+    <div class="invite-header">
+      <div class="we-request">— With Blessings of Lord Murugan —</div>
+      <div class="pleasure">Together with their families, we joyfully invite you<br>to witness the sacred union of</div>
+    </div>
+
+    <div class="couple-section">
+      <div class="groom-name">Ramakrishnan</div>
+      <div class="groom-tamil">ராமகிருஷ்ணன்</div>
+      <div class="groom-parents">S/o Thiru. Krishnamoorthi & Thirumathi. Rajeshwari</div>
+      <span class="and-symbol">&amp;</span>
+      <div class="bride-name">Sweatha</div>
+      <div class="bride-tamil">ஸ்வேதா</div>
+      <div class="bride-parents">D/o Thiru. Elumalai & Thirumathi. Jayanthi</div>
+    </div>
+    <div class="flower-divider">🌺 💛 🌺</div>
+  </div>
+
+  <!-- Wedding Event Details -->
+  <div class="event-section">
+    <div class="event-title">🕉️ திருமண விழா · Wedding Day</div>
+    <div class="event-grid">
+      <div class="event-item">
+        <span class="icon">📅</span>
+        <div class="label">Date · தேதி</div>
+        <div class="value">Oct 30, 2026</div>
+        <div class="value-tamil">அக்டோபர் 30, 2026</div>
+      </div>
+      <div class="event-item">
+        <span class="icon">📍</span>
+        <div class="label">Venue · இடம்</div>
+        <div class="value">Mailam Murugan Temple</div>
+        <div class="value-tamil">மைலம் முருகன் கோவில்</div>
+      </div>
+      <div class="muhurtham-box">
+        <div class="muh-label">🪔 திருமண முகூர்த்தம் 🪔</div>
+        <div class="muh-time">6:00 AM – 7:30 AM</div>
+        <div class="muh-sub">Auspicious Muhurtham Time · வேத முகூர்த்தம்</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reception Event Details -->
+  <div class="event-section" style="margin-top:4px; background:linear-gradient(135deg,#1a4a2e,#0d3320);">
+    <div class="event-title" style="color:#a8e6c0;">💒 வரவேற்பு விழா · Reception Night</div>
+    <div class="event-grid">
+      <div class="event-item">
+        <span class="icon">📅</span>
+        <div class="label">Date · தேதி</div>
+        <div class="value">Nov 1, 2026</div>
+        <div class="value-tamil">நவம்பர் 1, 2026</div>
+      </div>
+      <div class="event-item">
+        <span class="icon">⏰</span>
+        <div class="label">Time · நேரம்</div>
+        <div class="value">6:00 PM – 10:30 PM</div>
+        <div class="value-tamil">மாலை 6 – இரவு 10:30</div>
+      </div>
+      <div class="muhurtham-box" style="border-color:rgba(168,230,192,.5); background:rgba(168,230,192,.1);">
+        <div class="muh-label" style="color:#a8e6c0;">📍 The Palace House</div>
+        <div class="muh-time" style="color:#a8e6c0; font-size:1rem;">136/49, Sai Baba Kovil St</div>
+        <div class="muh-sub">Cholamandal Artists Village, Injambakkam, Chennai – 600115</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="countdown-section">
+      <div class="countdown-title">Counting Down to the Big Day</div>
+      <div class="countdown-boxes">
+        <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Days</div></div>
+        <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Hours</div></div>
+        <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Mins</div></div>
+        <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Secs</div></div>
+      </div>
+    </div>
+
+    <div class="flower-divider">✿ ✿ ✿</div>
+
+    <!-- Wedding Venue -->
+    <div class="venue-section">
+      <div style="font-size:.72rem;color:var(--maroon);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">🕉️ Wedding Venue</div>
+      <div class="venue-name">Mailam Murugan Temple</div>
+      <div class="venue-address">Mailam, Villupuram District,<br>Tamil Nadu, India</div>
+      <a class="btn-map" href="https://maps.google.com/?q=Mailam+Murugan+Temple+Villupuram+Tamil+Nadu" target="_blank">📍 Wedding Venue Map</a>
+    </div>
+
+    <div class="flower-divider">🌼 🌼 🌼</div>
+
+    <!-- Reception Venue -->
+    <div class="venue-section" style="background:linear-gradient(180deg,transparent,rgba(45,106,46,.06),transparent);border-radius:12px;padding:12px 0 16px;">
+      <div style="font-size:.72rem;color:#2d6a2d;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;">💒 Reception Venue</div>
+      <div class="venue-name" style="color:#2d6a2d;">The Palace House</div>
+      <div class="venue-address">136/49, Sai Baba Kovil St,<br>Cholamandal Artists Village, Injambakkam,<br>Chennai – 600 115, Tamil Nadu</div>
+      <a class="btn-map" style="background:linear-gradient(135deg,#2d6a2d,#1a4a1a);" href="https://maps.google.com/?q=136/49+Sai+Baba+Kovil+Street+Injambakkam+Chennai+600115" target="_blank">📍 Reception Venue Map</a>
+    </div>
+
+    <div class="flower-divider">🌼 🌼 🌼</div>
+
+    <div class="events-timeline">
+      <div class="timeline-title">✦ Wedding Events Schedule ✦</div>
+
+      <div class="timeline-item" onclick="toggleEvent(this)">
+        <div class="tl-icon">🪔</div>
+        <div class="tl-content">
+          <div class="tl-name">Nalangu (Haldi) Ceremony</div>
+          <div class="tl-name-tamil">நலங்கு விழா</div>
+          <div class="tl-time">📅 Oct 29 · 4:00 PM – 6:00 PM</div>
+          <div class="tl-desc">Turmeric ceremony with family. The bride and groom's families apply turmeric paste — a sacred purification ritual filled with folk songs, joy, and laughter.</div>
+          <div class="tl-toggle">▼ Tap for details</div>
+        </div>
+      </div>
+
+      <div class="timeline-item" onclick="toggleEvent(this)">
+        <div class="tl-icon">🌸</div>
+        <div class="tl-content">
+          <div class="tl-name">Mehendi & Sangeet Night</div>
+          <div class="tl-name-tamil">மருதாணி & இசை மாலை</div>
+          <div class="tl-time">📅 Oct 29 · 7:00 PM – 10:00 PM</div>
+          <div class="tl-desc">Enjoy traditional Carnatic music and folk songs. The bride is adorned with beautiful mehendi while families celebrate with dance and music.</div>
+          <div class="tl-toggle">▼ Tap for details</div>
+        </div>
+      </div>
+
+      <div class="timeline-item" onclick="toggleEvent(this)">
+        <div class="tl-icon">🕉️</div>
+        <div class="tl-content">
+          <div class="tl-name">Sacred Wedding Ceremony</div>
+          <div class="tl-name-tamil">திருமண விழா</div>
+          <div class="tl-time">📅 Oct 30 · 6:00 AM – 7:30 AM</div>
+          <div class="tl-desc">Sacred Vedic rituals — Kasi Yatrai, Oonjal (swing ceremony), Maalai Maatral (garland exchange), and Saptapadi (7 vows) around the holy fire.</div>
+          <div class="tl-toggle">▼ Tap for details</div>
+        </div>
+      </div>
+
+      <div class="timeline-item" onclick="toggleEvent(this)">
+        <div class="tl-icon">🍽️</div>
+        <div class="tl-content">
+          <div class="tl-name">Grand Wedding Feast</div>
+          <div class="tl-name-tamil">திருமண விருந்து</div>
+          <div class="tl-time">📅 Oct 30 · 8:00 AM – 2:00 PM</div>
+          <div class="tl-desc">Traditional Tamil sadhya on banana leaf — sambar, rasam, kootu, avial, payasam and 20+ dishes. A true feast for all!</div>
+          <div class="tl-toggle">▼ Tap for details</div>
+        </div>
+      </div>
+
+      <div class="timeline-item" onclick="toggleEvent(this)">
+        <div class="tl-icon">💒</div>
+        <div class="tl-content">
+          <div class="tl-name">Evening Reception</div>
+          <div class="tl-name-tamil">வரவேற்பு விழா</div>
+          <div class="tl-time">📅 Nov 1 · 6:00 PM – 10:30 PM</div>
+          <div class="tl-desc">Grand reception at The Palace House, Injambakkam, Chennai — join the newlyweds for blessings, photography, music, and a memorable evening of celebration.</div>
+          <div class="tl-toggle">▼ Tap for details</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flower-divider">🌹 💕 🌹</div>
+  </div>
+
+  <!-- RSVP -->
+  <div class="rsvp-section">
+    <div class="rsvp-title">💌 RSVP Kindly</div>
+    <div class="rsvp-subtitle">Please confirm your attendance · உங்கள் வருகையை தெரிவிக்கவும்</div>
+    <div class="rsvp-form" id="rsvp-form">
+      <input type="text" id="rsvp-name"   placeholder="Your Name · உங்கள் பெயர்"/>
+      <input type="tel"  id="rsvp-phone"  placeholder="Mobile Number · அலைபேசி"/>
+      <select id="rsvp-guests">
+        <option value="" disabled selected>Number of guests · விருந்தினர்</option>
+        <option>1</option><option>2</option><option>3</option>
+        <option>4</option><option>5</option><option>6+</option>
+      </select>
+      <div class="rsvp-btns">
+        <button class="btn-rsvp btn-yes" onclick="submitRSVP('yes')">✓ Joyfully Accept</button>
+        <button class="btn-rsvp btn-no"  onclick="submitRSVP('no')">✗ Regretfully Decline</button>
+      </div>
+    </div>
+    <div class="rsvp-success" id="rsvp-success"></div>
+  </div>
+
+  <div class="card-body">
+    <div class="share-section">
+      <div class="share-title">Share the Joy · மகிழ்ச்சியை பகிர்க</div>
+      <div class="share-btns">
+        <a class="btn-share btn-wa" href="#" onclick="shareWA(event)">💬 Share on WhatsApp</a>
+        <button class="btn-share btn-copy" onclick="copyLink()">🔗 Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="footer-blessing">வாழ்க வளமுடன் · நலமுடன் வாழ்க 🙏</div>
+    <div class="footer-sub">WITH DIVINE BLESSINGS · ✦ · KRISHNAMOORTHI & ELUMALAI FAMILIES</div>
+  </div>
+  <div class="gold-border"></div>
+</div>
+
+<button class="music-btn" id="music-btn" onclick="toggleMusic()" title="Toggle Music">🎵</button>
+
+<script>
+// Floating petals
+(function(){
+  const c=['#c9a84c','#f4a328','#ff9aa2','#ffdac1','#e2f0cb','#ffb7b2'];
+  const p=document.getElementById('particles');
+  for(let i=0;i<35;i++){
+    const el=document.createElement('div');
+    el.className='particle';
+    el.style.cssText=`left:${Math.random()*100}vw;width:${4+Math.random()*10}px;height:${4+Math.random()*10}px;background:${c[i%c.length]};animation-duration:${7+Math.random()*10}s;animation-delay:${Math.random()*12}s`;
+    p.appendChild(el);
+  }
+})();
+
+function openInvite(){
+  const ov=document.getElementById('envelope-overlay');
+  const card=document.getElementById('card');
+  ov.style.transition='opacity .7s ease, transform .7s ease';
+  ov.style.opacity='0'; ov.style.transform='scale(1.3)';
+  setTimeout(()=>{ ov.style.display='none'; card.classList.add('visible'); startCountdown(); },700);
+}
+
+function startCountdown(){
+  const target=new Date('2026-10-30T06:00:00');
+  function tick(){
+    const diff=target-new Date();
+    if(diff<=0){['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id=>document.getElementById(id).textContent='00');return;}
+    const d=Math.floor(diff/86400000);
+    const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
+  }
+  tick(); setInterval(tick,1000);
+}
+
+function toggleEvent(el){
+  el.classList.toggle('expanded');
+  el.querySelector('.tl-toggle').textContent=el.classList.contains('expanded')?'▲ Close':'▼ Tap for details';
+}
+
+function submitRSVP(choice){
+  const name=document.getElementById('rsvp-name').value.trim();
+  const phone=document.getElementById('rsvp-phone').value.trim();
+  const guests=document.getElementById('rsvp-guests').value||'1';
+  if(!name){alert('Please enter your name · உங்கள் பெயரை உள்ளிடவும்');return;}
+  document.getElementById('rsvp-form').style.display='none';
+  const msg=document.getElementById('rsvp-success');
+  msg.classList.add('show');
+  if(choice==='yes'){
+    msg.innerHTML=`🎉 Thank you, ${name}!<br>We can't wait to celebrate with you!<br><small style="color:#ddd;font-family:'Noto Serif Tamil',serif;font-size:.8rem">நன்றி · உங்கள் வருகைக்கு காத்திருக்கிறோம் 🙏</small>`;
+    const waMsg=encodeURIComponent(`✅ RSVP Confirmed!\nName: ${name}\nGuests: ${guests}\nPhone: ${phone||'-'}\n\nI will attend Ramakrishnan & Sweatha's wedding on Oct 30, 2026! 🎊🌺`);
+    setTimeout(()=>window.open(`https://wa.me/919876543210?text=${waMsg}`,'_blank'),1200);
+  } else {
+    msg.innerHTML=`💐 We understand, ${name}.<br>Thank you for letting us know.<br><small style="color:#ddd;font-family:'Noto Serif Tamil',serif;font-size:.8rem">நன்றி · உங்கள் வாழ்த்துக்கள் கோருகிறோம் 🙏</small>`;
+  }
+}
+
+function shareWA(e){
+  e.preventDefault();
+  const text=encodeURIComponent(`💍 *Wedding Invitation* 💍\n\nYou are cordially invited to the wedding of\n\n🌺 *Ramakrishnan* & *Sweatha* 🌺\n\n📅 *Wedding Date:* Friday, October 30, 2026\n⏰ *Muhurtham:* 6:00 AM – 7:30 AM\n📍 *Venue:* Mailam Murugan Temple, Villupuram\n\n💒 *Reception:* Sunday, November 1, 2026\n⏰ *Time:* 6:00 PM – 10:30 PM\n📍 The Palace House, Injambakkam, Chennai\n\n🙏 Your presence will bless us\n*திருமண அழைப்பிதழ்* — Krishnamoorthi & Elumalai Families\n\n🔗 Open Digital Invite:\n${window.location.href}`);
+  window.open(`https://wa.me/?text=${text}`,'_blank');
+}
+
+function copyLink(){
+  const url=window.location.href;
+  if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>alert('✅ Invite link copied! Share it with your loved ones. 🎊'));
+  else prompt('Copy this link:',url);
+}
+
+let playing=false,audioCtx=null,gainNode=null;
+function toggleMusic(){
+  const btn=document.getElementById('music-btn');
+  if(!audioCtx){
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    // Create a gentle harmonious tone
+    [196,246,294,392].forEach((freq,i)=>{
+      const osc=ctx.createOscillator();
+      const g=ctx.createGain();
+      osc.type='sine'; osc.frequency.value=freq;
+      g.gain.value=0.015;
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start(ctx.currentTime+i*0.05);
+    });
+    gainNode={gain:{value:0.015}};
+    audioCtx=ctx; playing=true; btn.textContent='🎶'; return;
+  }
+  playing=!playing;
+  btn.textContent=playing?'🎶':'🎵';
+}
+</script>
+</body>
+</html>
