@@ -87,38 +87,41 @@
     .div::before,.div::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
     .div span{color:var(--gold);font-size:1.1rem;}
 
-    /* ── Couple ── */
-    .couple{background:linear-gradient(180deg,var(--cream),#fff9ec,var(--cream));padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden;}
-    .couple::before,.couple::after{content:'— ✦ ❧ ✦ —';position:absolute;left:50%;transform:translateX(-50%);color:var(--gold);font-size:.7rem;letter-spacing:6px;opacity:.5;}
+    .couple{background:linear-gradient(180deg,#fff9f0,#fffdf5,#fff9f0);padding:34px 20px 28px;text-align:center;position:relative;overflow:hidden;}
+    .couple::before,.couple::after{content:'— ✦ ❧ ✦ —';position:absolute;left:50%;transform:translateX(-50%);color:var(--gold);font-size:.7rem;letter-spacing:6px;opacity:.6;}
     .couple::before{top:8px}.couple::after{bottom:8px}
-    .spark{position:absolute;color:var(--gold);font-size:.8rem;opacity:0;pointer-events:none;animation:sparkle 3s ease-in-out infinite;}
-    @keyframes sparkle{0%,100%{opacity:0;transform:scale(.4) rotate(0deg)}50%{opacity:.9;transform:scale(1.2) rotate(180deg)}}
-    .prelude{color:var(--maroon);font-size:.72rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px;}
-    .intro{color:#5a3a00;font-size:1rem;font-style:italic;line-height:1.7;margin-bottom:22px;}
+    /* floating hearts */
+    .heart-float{position:absolute;pointer-events:none;font-size:1rem;opacity:0;animation:heartRise 5s ease-in infinite;}
+    @keyframes heartRise{0%{opacity:0;transform:translateY(0) scale(.5)}20%{opacity:.7}80%{opacity:.3}100%{opacity:0;transform:translateY(-120px) scale(1.2) rotate(15deg)}}
+    .spark{position:absolute;color:var(--gold);font-size:.9rem;opacity:0;pointer-events:none;animation:sparkle 3s ease-in-out infinite;}
+    @keyframes sparkle{0%,100%{opacity:0;transform:scale(.4) rotate(0deg)}50%{opacity:1;transform:scale(1.3) rotate(180deg)}}
+    .prelude{color:var(--maroon);font-size:.75rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;font-weight:700;}
+    .intro{color:#3d2200;font-size:1.05rem;font-style:italic;line-height:1.9;margin-bottom:24px;font-weight:600;}
     .photos-row{display:flex;align-items:center;justify-content:center;gap:14px;margin:8px 0;position:relative;z-index:2;}
     .frame{
       width:120px;height:120px;border-radius:50%;
-      border:2px solid var(--gold);
-      background:radial-gradient(circle at 35% 30%,rgba(201,168,76,.30) 0%,rgba(122,28,46,.20) 55%,rgba(74,14,28,.35) 100%);
+      border:3px solid var(--gold);
+      background:radial-gradient(circle at 35% 30%,rgba(255,215,0,.22) 0%,rgba(122,28,46,.25) 55%,rgba(74,14,28,.40) 100%);
       display:flex;align-items:center;justify-content:center;
-      box-shadow:0 0 40px rgba(201,168,76,.35),0 8px 30px rgba(0,0,0,.25),inset 0 0 22px rgba(201,168,76,.1);
+      box-shadow:0 0 0 6px rgba(201,168,76,.12),0 0 40px rgba(255,215,0,.4),0 8px 30px rgba(0,0,0,.3),inset 0 0 22px rgba(201,168,76,.15);
       transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s;
       position:relative;
     }
-    .frame:hover{transform:scale(1.08) rotate(2deg);box-shadow:0 0 60px rgba(201,168,76,.6),0 12px 40px rgba(0,0,0,.3);}
+    .frame:hover{transform:scale(1.1) rotate(3deg);box-shadow:0 0 0 8px rgba(201,168,76,.2),0 0 70px rgba(255,215,0,.65),0 12px 40px rgba(0,0,0,.3);}
     /* rotating dashed ring */
-    .frame::after{content:'';position:absolute;inset:-7px;border-radius:50%;border:1.5px dashed rgba(201,168,76,.45);animation:spin 16s linear infinite;}
+    .frame::after{content:'';position:absolute;inset:-9px;border-radius:50%;border:2px dashed rgba(255,215,0,.55);animation:spin 12s linear infinite;}
     /* pulsing inner ring */
-    .frame::before{content:'';position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(201,168,76,.3);animation:ringPulse 2.5s ease-in-out infinite;}
-    @keyframes ringPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.9;transform:scale(1.05)}}
+    .frame::before{content:'';position:absolute;inset:7px;border-radius:50%;border:1.5px solid rgba(255,215,0,.4);animation:ringPulse 2s ease-in-out infinite;}
+    @keyframes ringPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .monogram{font-family:'Cinzel Decorative',cursive;font-size:3.2rem;font-weight:700;background:linear-gradient(135deg,#f5e6b3,#c9a84c 45%,#9a6f00 55%,#f5e6b3);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 8px rgba(154,111,0,.2);animation:monoShine 3s ease-in-out infinite;line-height:1;}
-    @keyframes monoShine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
-    .g-name{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.2rem,5vw,1.9rem);font-weight:700;line-height:1.2;margin-top:12px;word-break:break-word;overflow-wrap:anywhere;white-space:normal;background:linear-gradient(100deg,#7b1c2e 20%,#c9a84c 45%,#7b1c2e 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;}
-    .b-name{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.2rem,5vw,1.9rem);font-weight:700;line-height:1.2;margin-top:12px;word-break:break-word;overflow-wrap:anywhere;white-space:normal;background:linear-gradient(100deg,#9a6f00 20%,#f4a328 45%,#9a6f00 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;animation-delay:.5s;}
-    @keyframes nameShine{to{background-position:200% center}}
+    .monogram{font-family:'Cinzel Decorative',cursive;font-size:3.4rem;font-weight:700;background:linear-gradient(135deg,#fff5c0 0%,#ffd700 25%,#c9a84c 50%,#fff8d0 75%,#ffd700 100%);background-size:300% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:monoShine 2.5s linear infinite;line-height:1;filter:drop-shadow(0 0 6px rgba(255,215,0,.7));}
+    @keyframes monoShine{0%{background-position:0% center}100%{background-position:300% center}}
+    .g-name{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.25rem,5vw,2rem);font-weight:700;line-height:1.2;margin-top:12px;word-break:break-word;overflow-wrap:anywhere;white-space:normal;background:linear-gradient(100deg,#3d0000 0%,#7b1c2e 25%,#ff6b6b 50%,#7b1c2e 75%,#3d0000 100%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 3s linear infinite;filter:drop-shadow(0 1px 4px rgba(122,28,46,.4));}
+    .b-name{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.25rem,5vw,2rem);font-weight:700;line-height:1.2;margin-top:12px;word-break:break-word;overflow-wrap:anywhere;white-space:normal;background:linear-gradient(100deg,#5a1a00 0%,#b8600a 20%,#ff9a3c 40%,#ffd700 55%,#ff9a3c 70%,#b8600a 85%,#5a1a00 100%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 2.8s linear infinite;animation-delay:.6s;filter:drop-shadow(0 2px 6px rgba(255,154,60,.5));}
+    @keyframes nameShine{0%{background-position:0% center}100%{background-position:250% center}}
     .n-tamil{font-family:'Noto Serif Tamil',serif;font-size:.9rem;color:#888;margin:3px 0;}
-    .n-parents{font-size:.75rem;color:#aaa;font-style:italic;margin-top:3px;line-height:1.5;}
+    .n-parents{font-size:.82rem;color:#5a3800;font-style:normal;margin-top:6px;line-height:1.7;font-weight:600;letter-spacing:.3px;}
+    .n-parents .rel-label{display:inline-block;color:var(--maroon);font-weight:700;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;background:rgba(123,28,46,.08);border-radius:4px;padding:1px 5px;margin-bottom:1px;}
     .and-col{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 8px;}
     .and-sym{font-family:'Dancing Script',cursive;font-size:4.2rem;color:var(--gold);line-height:1;text-shadow:0 2px 15px rgba(201,168,76,.4);animation:heartPulse 1.8s ease-in-out infinite;}
     @keyframes heartPulse{0%,100%{transform:scale(1)}25%{transform:scale(1.18)}60%{transform:scale(.97)}}
@@ -235,11 +238,12 @@
     @keyframes wave{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
 
     @media(max-width:480px){
-      .g-name,.b-name{font-size:clamp(1rem,4.5vw,1.5rem)}
+      .g-name,.b-name{font-size:clamp(1.05rem,4.5vw,1.55rem)}
       .and-sym{font-size:3.2rem}
       .cd-n{font-size:1.6rem}
       .cd-box{min-width:60px}
-      .frame{width:95px;height:95px}
+      .frame{width:100px;height:100px}
+      .monogram{font-size:2.8rem}
     }
   </style>
 </head>
@@ -349,14 +353,20 @@
     <span class="spark" style="top:55%;left:8%;animation-delay:1.2s">✦</span>
     <span class="spark" style="top:60%;right:9%;animation-delay:1.8s">✧</span>
     <span class="spark" style="top:42%;left:48%;animation-delay:2.2s">✦</span>
-    <div class="prelude">— With Blessings of Lord Murugan —</div>
+    <span class="spark" style="top:15%;left:35%;animation-delay:2.8s">✧</span>
+    <span class="spark" style="top:75%;right:25%;animation-delay:3.4s">✦</span>
+    <span class="heart-float" style="left:18%;animation-delay:1s;font-size:.8rem">💛</span>
+    <span class="heart-float" style="left:42%;animation-delay:2.5s;font-size:.7rem">🌸</span>
+    <span class="heart-float" style="left:68%;animation-delay:4s;font-size:.9rem">💛</span>
+    <span class="heart-float" style="left:82%;animation-delay:1.8s;font-size:.7rem">🌸</span>
+    <div class="prelude">— With the Grace of God & Divine Blessings —</div>
     <div class="intro">Together with their families, we joyfully invite you<br>to witness and bless the sacred union of</div>
     <div class="photos-row">
       <div style="text-align:center">
         <div class="frame"><span class="monogram">R</span></div>
         <div class="g-name">Ramakrishnan</div>
         <div class="n-tamil">ராமகிருஷ்ணன்</div>
-        <div class="n-parents">S/o Thiru. Krishnamoorthi<br>&amp; Thirumathi. Rajeshwari</div>
+        <div class="n-parents"><span class="rel-label">S/O</span> Thiru. Krishnamoorthi<br>&amp; Thirumathi. Rajeshwari</div>
       </div>
       <div class="and-col">
         <div class="and-sym">&amp;</div>
@@ -366,7 +376,7 @@
         <div class="frame"><span class="monogram">S</span></div>
         <div class="b-name">Sweatha</div>
         <div class="n-tamil">ஸ்வேதா</div>
-        <div class="n-parents">D/o Thiru. Elumalai<br>&amp; Thirumathi. Jayanthi</div>
+        <div class="n-parents"><span class="rel-label">D/O</span> Thiru. Elumalai<br>&amp; Thirumathi. Jayanthi</div>
       </div>
     </div>
   </div>
