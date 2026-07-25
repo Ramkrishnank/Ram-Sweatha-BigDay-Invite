@@ -567,7 +567,7 @@
 // 👇 Paste your Google Apps Script URL here after setup
 const SHEET_URL  = 'https://script.google.com/macros/s/AKfycbw8kYanr7_Yx8uh06jVWgbqQoFQhtyCp0lkPvwEp4vEAN2hqbBDq90sTW9uoGO0M8Q39Q/exec';
 const WA_NUMBER  = '919876543210'; // Replace with real number
-const YT_ID      = '5JkkUXeajbM';  // YouTube BGM video ID
+const YT_ID      = 'nDeGKa1dh2w';  // YouTube BGM video ID
 const WED_DATE   = new Date('2026-10-30T06:00:00');
 // ══════════════════════════════════════════════════════════════════
 
@@ -594,10 +594,10 @@ let ytPlayer,ytReady=false,musicOn=false;
 function onYouTubeIframeAPIReady(){
   ytPlayer=new YT.Player('yt-player',{
     height:'1',width:'1',videoId:YT_ID,
-    playerVars:{autoplay:0,controls:0,loop:1,playlist:YT_ID,mute:0,rel:0},
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:YT_ID,mute:0,rel:0,start:3},
     events:{
-      onReady:()=>{ytReady=true;},
-      onStateChange:(e)=>{if(e.data===YT.PlayerState.ENDED)ytPlayer.seekTo(0);}
+      onReady:()=>{ytReady=true;ytPlayer.seekTo(3);},
+      onStateChange:(e)=>{if(e.data===YT.PlayerState.ENDED)ytPlayer.seekTo(3);}
     }
   });
 }
