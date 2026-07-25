@@ -114,8 +114,8 @@
     @keyframes spin{to{transform:rotate(360deg)}}
     .monogram{font-family:'Cinzel Decorative',cursive;font-size:3.2rem;font-weight:700;background:linear-gradient(135deg,#f5e6b3,#c9a84c 45%,#9a6f00 55%,#f5e6b3);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 8px rgba(154,111,0,.2);animation:monoShine 3s ease-in-out infinite;line-height:1;}
     @keyframes monoShine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
-    .g-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;line-height:1.1;margin-top:12px;background:linear-gradient(100deg,#7b1c2e 20%,#c9a84c 45%,#7b1c2e 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;}
-    .b-name{font-family:'Cinzel Decorative',cursive;font-size:1.9rem;font-weight:700;line-height:1.1;margin-top:12px;background:linear-gradient(100deg,#9a6f00 20%,#f4a328 45%,#9a6f00 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;animation-delay:.5s;}
+    .g-name{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.2rem,5vw,1.9rem);font-weight:700;line-height:1.2;margin-top:12px;word-break:break-word;overflow-wrap:anywhere;white-space:normal;background:linear-gradient(100deg,#7b1c2e 20%,#c9a84c 45%,#7b1c2e 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;}
+    .b-name{font-family:'Cinzel Decorative',cursive;font-size:clamp(1.2rem,5vw,1.9rem);font-weight:700;line-height:1.2;margin-top:12px;word-break:break-word;overflow-wrap:anywhere;white-space:normal;background:linear-gradient(100deg,#9a6f00 20%,#f4a328 45%,#9a6f00 70%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:nameShine 4s linear infinite;animation-delay:.5s;}
     @keyframes nameShine{to{background-position:200% center}}
     .n-tamil{font-family:'Noto Serif Tamil',serif;font-size:.9rem;color:#888;margin:3px 0;}
     .n-parents{font-size:.75rem;color:#aaa;font-style:italic;margin-top:3px;line-height:1.5;}
@@ -235,7 +235,7 @@
     @keyframes wave{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
 
     @media(max-width:480px){
-      .g-name,.b-name{font-size:1.55rem}
+      .g-name,.b-name{font-size:clamp(1rem,4.5vw,1.5rem)}
       .and-sym{font-size:3.2rem}
       .cd-n{font-size:1.6rem}
       .cd-box{min-width:60px}
