@@ -527,6 +527,9 @@
   <div class="stripe"></div>
 </div>
 
+<!-- Hidden iframe for Google Sheets form submission (bypasses redirect issue) -->
+<iframe name="rsvp-iframe" style="display:none"></iframe>
+
 <!-- Music Button -->
 <button id="mbtn" onclick="toggleMusic()" title="Toggle Background Music">
   <span class="music-icon" id="m-icon">🎵</span>
@@ -656,12 +659,20 @@ async function submitRSVP(choice){
     submittedAt:new Date().toISOString()
   };
 
-  // ── Save to Google Sheets via form-encoded POST (most reliable with no-cors) ──
+  // ── Save to Google Sheets via hidden form (bypasses redirect issue) ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     try{
-      const form=new URLSearchParams();
-      form.append('payload',JSON.stringify(data));
-      await fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:form});
+      const frm=document.createElement('form');
+      frm.method='POST'; frm.action=SHEET_URL; frm.target='rsvp-iframe';
+      frm.style.display='none';
+      Object.keys(data).forEach(k=>{
+        const inp=document.createElement('input');
+        inp.type='hidden'; inp.name=k; inp.value=data[k];
+        frm.appendChild(inp);
+      });
+      document.body.appendChild(frm);
+      frm.submit();
+      setTimeout(()=>document.body.removeChild(frm),3000);
     }catch(e){console.warn('Sheet:',e);}
   }
 

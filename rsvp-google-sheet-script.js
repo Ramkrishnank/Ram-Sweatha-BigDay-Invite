@@ -65,10 +65,14 @@ function doPost(e) {
     const ss    = getSpreadsheet();
     const sheet = ensureTab_(ss);
 
-    // Supports both form-encoded payload (URLSearchParams) and raw JSON body
+    // Read individual form fields sent by the hidden form
+    const p = e.parameter || {};
     let data = {};
-    if (e.parameter && e.parameter.payload) {
-      data = JSON.parse(e.parameter.payload);
+    if (p.name) {
+      // direct field submission from hidden form
+      data = p;
+    } else if (p.payload) {
+      data = JSON.parse(p.payload);
     } else if (e.postData && e.postData.contents) {
       data = JSON.parse(e.postData.contents);
     }
