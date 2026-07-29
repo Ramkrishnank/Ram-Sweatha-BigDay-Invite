@@ -659,11 +659,16 @@ async function submitRSVP(choice){
     submittedAt:new Date().toISOString()
   };
 
-  // ── Save to Google Sheets via Image pixel GET ──────────────────
+  // ── Save to Google Sheets — works on all browsers including iOS/Android ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     try{
       const params=new URLSearchParams(Object.entries(data));
-      new Image().src=SHEET_URL+'?'+params.toString();
+      // fetch GET with no-cors works on all platforms (mobile + desktop)
+      fetch(SHEET_URL+'?'+params.toString(),{method:'GET',mode:'no-cors'})
+        .catch(()=>{
+          // Fallback: Image pixel (desktop browsers)
+          new Image().src=SHEET_URL+'?'+params.toString();
+        });
     }catch(e){console.warn('Sheet:',e);}
   }
 
