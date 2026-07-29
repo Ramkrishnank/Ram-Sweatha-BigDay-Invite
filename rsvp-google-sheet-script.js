@@ -64,7 +64,14 @@ function doPost(e) {
   try {
     const ss    = getSpreadsheet();
     const sheet = ensureTab_(ss);
-    const data = JSON.parse(e.postData.contents);
+
+    // Supports both form-encoded payload (URLSearchParams) and raw JSON body
+    let data = {};
+    if (e.parameter && e.parameter.payload) {
+      data = JSON.parse(e.parameter.payload);
+    } else if (e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    }
 
     sheet.appendRow([
       data.timestamp   || new Date().toLocaleString(),
