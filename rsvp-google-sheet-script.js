@@ -59,23 +59,52 @@ function setup() {
   Logger.log('════════════════════════════════════════');
 }
 
-// ── Handle RSVP POST from the invite ───────────────────────────
+// ── Handle RSVP via GET (survives Google's 302 redirect) ───────
+function doGet(e) {
+  // If query params present, it's an RSVP submission
+  if (e.parameter && e.parameter.name) {
+    try {
+      const ss    = getSpreadsheet();
+      const sheet = ensureTab_(ss);
+      const p     = e.parameter;
+
+      sheet.appendRow([
+        p.timestamp   || new Date().toLocaleString(),
+        p.name        || '',
+        p.phone       || '',
+        p.guests      || '',
+        p.events      || '',
+        p.attending   || '',
+        p.message     || '',
+        p.submittedAt || new Date().toISOString()
+      ]);
+
+      const row = sheet.getLastRow();
+      const att = (p.attending || '').toLowerCase();
+      if (att.indexOf('yes') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#e8f5e9');
+      else if (att.indexOf('no') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#fce4ec');
+
+      return HtmlService.createHtmlOutput('<p style="font-family:sans-serif;color:green;padding:20px">✅ RSVP saved! Thank you ' + p.name + '.</p>');
+    } catch (err) {
+      return HtmlService.createHtmlOutput('<p style="color:red">Error: ' + err.toString() + '</p>');
+    }
+  }
+
+  // No params — just show the sheet link
+  const url = getSpreadsheet().getUrl();
+  return HtmlService.createHtmlOutput(
+    '<h2>Ram &amp; Sweatha RSVP is running! 🎉</h2>' +
+    '<p>Responses saved here: <a href="' + url + '" target="_blank">' + url + '</a></p>'
+  );
+}
+
+// ── doPost kept as fallback ─────────────────────────────────────
 function doPost(e) {
   try {
     const ss    = getSpreadsheet();
     const sheet = ensureTab_(ss);
-
-    // Read individual form fields sent by the hidden form
     const p = e.parameter || {};
-    let data = {};
-    if (p.name) {
-      // direct field submission from hidden form
-      data = p;
-    } else if (p.payload) {
-      data = JSON.parse(p.payload);
-    } else if (e.postData && e.postData.contents) {
-      data = JSON.parse(e.postData.contents);
-    }
+    let data = p.name ? p : (p.payload ? JSON.parse(p.payload) : JSON.parse(e.postData.contents));
 
     sheet.appendRow([
       data.timestamp   || new Date().toLocaleString(),
@@ -88,26 +117,10 @@ function doPost(e) {
       data.submittedAt || new Date().toISOString()
     ]);
 
-    const row = sheet.getLastRow();
-    const att = (data.attending || '').toLowerCase();
-    if (att.indexOf('yes') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#e8f5e9');
-    else if (att.indexOf('no') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#fce4ec');
-
     return json_({ status: 'success' });
   } catch (err) {
     return json_({ status: 'error', message: err.toString() });
   }
-}
-
-// ── Visiting the /exec URL shows a link to your sheet ──────────
-function doGet() {
-  const ss  = getSpreadsheet();
-  const url = ss.getUrl();
-  return HtmlService.createHtmlOutput(
-    '<h2>Ram &amp; Sweatha RSVP is running! 🎉</h2>' +
-    '<p>Responses are saved in your Google Sheet:</p>' +
-    '<p><a href="' + url + '" target="_blank" style="font-size:16px">' + url + '</a></p>'
-  );
 }
 
 function json_(obj) {

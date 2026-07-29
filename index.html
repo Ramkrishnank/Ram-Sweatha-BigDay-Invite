@@ -659,20 +659,12 @@ async function submitRSVP(choice){
     submittedAt:new Date().toISOString()
   };
 
-  // ── Save to Google Sheets via hidden form (bypasses redirect issue) ──
+  // ── Save to Google Sheets via iframe GET (survives Google's 302 redirect) ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     try{
-      const frm=document.createElement('form');
-      frm.method='POST'; frm.action=SHEET_URL; frm.target='rsvp-iframe';
-      frm.style.display='none';
-      Object.keys(data).forEach(k=>{
-        const inp=document.createElement('input');
-        inp.type='hidden'; inp.name=k; inp.value=data[k];
-        frm.appendChild(inp);
-      });
-      document.body.appendChild(frm);
-      frm.submit();
-      setTimeout(()=>document.body.removeChild(frm),3000);
+      const params=new URLSearchParams(Object.entries(data));
+      const iframe=document.getElementById('rsvp-iframe');
+      iframe.src=SHEET_URL+'?'+params.toString();
     }catch(e){console.warn('Sheet:',e);}
   }
 
