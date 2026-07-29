@@ -654,22 +654,26 @@ async function submitRSVP(choice){
   const sav=document.getElementById('saving');sav.style.display='block';
 
   const data={
-    name, phone, guests:guests||'-', events:events||'-',
-    message:msg, attending:choice==='yes'?'Yes ✅':'No ❌',
+    name:name,
+    phone:phone||'-',
+    guests:guests||'-',
+    events:events||'-',
+    message:msg||'-',
+    attending:choice==='yes'?'Yes':'No',  // no emoji — safe for all browsers
     timestamp:new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}),
-    submittedAt:new Date().toISOString()
+    submittedAt:new Date().toISOString(),
+    _t:Date.now()  // cache-busting
   };
 
-  // ── Save to Google Sheets — works on all browsers including iOS/Android ──
+  // ── Save via XMLHttpRequest — most compatible across iOS/Android/Desktop ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     try{
-      const params=new URLSearchParams(Object.entries(data));
-      // fetch GET with no-cors works on all platforms (mobile + desktop)
-      fetch(SHEET_URL+'?'+params.toString(),{method:'GET',mode:'no-cors'})
-        .catch(()=>{
-          // Fallback: Image pixel (desktop browsers)
-          new Image().src=SHEET_URL+'?'+params.toString();
-        });
+      const params=new URLSearchParams(data);
+      const url=SHEET_URL+'?'+params.toString();
+      // XHR approach — works reliably on all mobile browsers
+      const xhr=new XMLHttpRequest();
+      xhr.open('GET',url,true);
+      xhr.send();
     }catch(e){console.warn('Sheet:',e);}
   }
 
