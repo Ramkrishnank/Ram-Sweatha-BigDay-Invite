@@ -659,15 +659,11 @@ async function submitRSVP(choice){
     submittedAt:new Date().toISOString()
   };
 
-  // ── Save to Google Sheets via Image pixel (most reliable, no popup, no CORS) ──
+  // ── Save to Google Sheets via Image pixel GET ──────────────────
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     try{
       const params=new URLSearchParams(Object.entries(data));
-      const img=new Image();
-      img.src=SHEET_URL+'?'+params.toString();
-      // Also try iframe as backup
-      const iframe=document.getElementById('rsvp-iframe');
-      if(iframe) iframe.src=SHEET_URL+'?'+params.toString();
+      new Image().src=SHEET_URL+'?'+params.toString();
     }catch(e){console.warn('Sheet:',e);}
   }
 
