@@ -59,9 +59,8 @@ function setup() {
   Logger.log('════════════════════════════════════════');
 }
 
-// ── Handle RSVP via GET (survives Google's 302 redirect) ───────
+// ── Handle RSVP via GET (Image pixel + iframe, survives redirects) ─
 function doGet(e) {
-  // If query params present, it's an RSVP submission
   if (e.parameter && e.parameter.name) {
     try {
       const ss    = getSpreadsheet();
@@ -84,13 +83,14 @@ function doGet(e) {
       if (att.indexOf('yes') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#e8f5e9');
       else if (att.indexOf('no') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#fce4ec');
 
-      return HtmlService.createHtmlOutput('<p style="font-family:sans-serif;color:green;padding:20px">✅ RSVP saved! Thank you ' + p.name + '.</p>');
+      // Return transparent 1x1 GIF so Image() pixel request completes
+      return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
     } catch (err) {
-      return HtmlService.createHtmlOutput('<p style="color:red">Error: ' + err.toString() + '</p>');
+      return ContentService.createTextOutput('ERR:' + err.toString());
     }
   }
 
-  // No params — just show the sheet link
+  // No params — show sheet link
   const url = getSpreadsheet().getUrl();
   return HtmlService.createHtmlOutput(
     '<h2>Ram &amp; Sweatha RSVP is running! 🎉</h2>' +
