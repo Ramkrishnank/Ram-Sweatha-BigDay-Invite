@@ -496,7 +496,7 @@
           <select class="fs" id="f-guests"><option value="" disabled selected>Count</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
         </div>
         <div><label class="fl">Attending · வருகை</label>
-          <select class="fs" id="f-events"><option value="" disabled selected>Events</option><option>Wedding Only</option><option>Reception Only</option><option>Both Events</option><option>All Events</option></select>
+          <select class="fs" id="f-events"><option value="" disabled selected>Events</option><option>Wedding Only</option><option>Reception Only</option><option>Wedding & Reception</option></select>
         </div>
       </div>
       <div><label class="fl">Blessings · வாழ்த்துகள் (optional)</label><textarea class="fta" id="f-msg" placeholder="Your blessings for the couple..."></textarea></div>
@@ -648,6 +648,7 @@ async function submitRSVP(choice){
   const events=document.getElementById('f-events').value;
   const msg   =document.getElementById('f-msg').value.trim();
   if(!name){alert('Please enter your name · உங்கள் பெயரை உள்ளிடவும்');return;}
+  if(choice==='yes' && !guests){alert('Please select number of guests · விருந்தினர் எண்ணிக்கையை தேர்வு செய்யவும்');return;}
 
   document.querySelectorAll('.btn-y,.btn-n').forEach(b=>b.classList.add('busy'));
   const sav=document.getElementById('saving');sav.style.display='block';
