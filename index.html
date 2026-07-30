@@ -665,17 +665,20 @@ async function submitRSVP(choice){
     _t:Date.now()  // cache-busting
   };
 
-  // ── Save via sendBeacon (works on ALL mobile browsers — iOS/Android/Desktop) ──
+  // ── Save RSVP — try multiple methods for broad browser support ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     try{
-      const fd=new FormData();
-      Object.entries(data).forEach(([k,v])=>fd.append(k,v));
-      // sendBeacon bypasses CORS restrictions on mobile — designed for cross-origin sends
-      const sent = navigator.sendBeacon ? navigator.sendBeacon(SHEET_URL,fd) : false;
+      const qs = new URLSearchParams(data).toString();
+      // sendBeacon with Blob (application/x-www-form-urlencoded) — doPost(e.parameter)
+      let sent = false;
+      if(navigator.sendBeacon){
+        const blob = new Blob([qs],{type:'application/x-www-form-urlencoded'});
+        sent = navigator.sendBeacon(SHEET_URL, blob);
+      }
+      // XHR GET fallback — doGet(e.parameter)
       if(!sent){
-        // Fallback for very old browsers
         const xhr=new XMLHttpRequest();
-        xhr.open('GET',SHEET_URL+'?'+new URLSearchParams(data).toString(),true);
+        xhr.open('GET',SHEET_URL+'?'+qs,true);
         xhr.send();
       }
     }catch(e){console.warn('Sheet:',e);}
