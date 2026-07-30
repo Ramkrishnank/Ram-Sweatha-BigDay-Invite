@@ -665,31 +665,39 @@ async function submitRSVP(choice){
     _t:Date.now()  // cache-busting
   };
 
+  // ── DEBUG: show visible log box on page (remove after fix confirmed) ──
+  const dbg=document.createElement('div');
+  dbg.id='rsvp-debug';
+  dbg.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#000;color:#0f0;font-size:11px;padding:8px;z-index:9999;max-height:40vh;overflow:auto;font-family:monospace;white-space:pre-wrap;';
+  document.body.appendChild(dbg);
+  function log(msg){dbg.textContent+='\n'+msg;dbg.scrollTop=dbg.scrollHeight;console.log(msg);}
+
+  log('UA: '+navigator.userAgent);
+  log('SHEET_URL set: '+(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'));
+
   // ── Save RSVP ────────────────────────────────────────────────────
-  // iOS Safari ITP blocks ALL cross-origin requests to script.google.com (classified as tracker).
-  // Fix: route through corsproxy.io — browser only talks to the proxy (CORS-safe),
-  // proxy relays to Apps Script server-side (no browser restrictions apply).
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     const qs = new URLSearchParams(data).toString();
     const direct = SHEET_URL + '?' + qs;
-    // Method 1: CORS proxy — works on iOS Safari + all browsers
     const proxied = 'https://corsproxy.io/?' + encodeURIComponent(direct);
-    fetch(proxied, {cache:'no-store'}).catch(function(){
-      // Method 2: hidden form→iframe fallback (Android/Desktop if proxy is down)
-      try{
-        const ifrName='rsvp_'+Date.now();
-        const ifr=document.createElement('iframe');
-        ifr.name=ifrName; ifr.style.display='none';
-        document.body.appendChild(ifr);
-        const frm=document.createElement('form');
-        frm.method='GET'; frm.action=SHEET_URL; frm.target=ifrName; frm.style.display='none';
-        Object.entries(data).forEach(function([k,v]){
-          const inp=document.createElement('input');inp.type='hidden';inp.name=k;inp.value=v;frm.appendChild(inp);
-        });
-        document.body.appendChild(frm); frm.submit();
-        setTimeout(function(){try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}},8000);
-      }catch(e2){console.warn('RSVP fallback err:',e2);}
-    });
+    log('Trying proxy: '+proxied.substring(0,80)+'...');
+    fetch(proxied, {cache:'no-store'})
+      .then(function(r){log('Proxy OK status='+r.status);})
+      .catch(function(err){
+        log('Proxy FAILED: '+err+'\nTrying direct fetch no-cors...');
+        // Try direct fetch no-cors
+        fetch(direct, {mode:'no-cors', cache:'no-store'})
+          .then(function(){log('Direct no-cors OK (opaque)');})
+          .catch(function(err2){
+            log('Direct no-cors FAILED: '+err2+'\nTrying XHR GET...');
+            try{
+              var x=new XMLHttpRequest();
+              x.onload=function(){log('XHR OK status='+x.status);};
+              x.onerror=function(){log('XHR FAILED');};
+              x.open('GET',direct,true); x.send();
+            }catch(e3){log('XHR exception: '+e3);}
+          });
+      });
   }
 
   sav.style.display='none';
