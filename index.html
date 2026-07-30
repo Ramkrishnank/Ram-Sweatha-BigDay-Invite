@@ -665,25 +665,31 @@ async function submitRSVP(choice){
     _t:Date.now()  // cache-busting
   };
 
-  // ── Save RSVP via hidden form→iframe (follows 302 redirects, zero CORS, works on ALL browsers) ──
+  // ── Save RSVP ────────────────────────────────────────────────────
+  // iOS Safari ITP blocks ALL cross-origin requests to script.google.com (classified as tracker).
+  // Fix: route through corsproxy.io — browser only talks to the proxy (CORS-safe),
+  // proxy relays to Apps Script server-side (no browser restrictions apply).
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
-    try{
-      const ifrName='rsvp_'+Date.now();
-      const ifr=document.createElement('iframe');
-      ifr.name=ifrName; ifr.style.display='none';
-      document.body.appendChild(ifr);
-      const frm=document.createElement('form');
-      frm.method='GET'; frm.action=SHEET_URL; frm.target=ifrName; frm.style.display='none';
-      Object.entries(data).forEach(function([k,v]){
-        const inp=document.createElement('input');
-        inp.type='hidden'; inp.name=k; inp.value=v; frm.appendChild(inp);
-      });
-      document.body.appendChild(frm);
-      frm.submit();
-      setTimeout(function(){
-        try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}
-      },8000);
-    }catch(e){console.warn('RSVP err:',e);}
+    const qs = new URLSearchParams(data).toString();
+    const direct = SHEET_URL + '?' + qs;
+    // Method 1: CORS proxy — works on iOS Safari + all browsers
+    const proxied = 'https://corsproxy.io/?' + encodeURIComponent(direct);
+    fetch(proxied, {cache:'no-store'}).catch(function(){
+      // Method 2: hidden form→iframe fallback (Android/Desktop if proxy is down)
+      try{
+        const ifrName='rsvp_'+Date.now();
+        const ifr=document.createElement('iframe');
+        ifr.name=ifrName; ifr.style.display='none';
+        document.body.appendChild(ifr);
+        const frm=document.createElement('form');
+        frm.method='GET'; frm.action=SHEET_URL; frm.target=ifrName; frm.style.display='none';
+        Object.entries(data).forEach(function([k,v]){
+          const inp=document.createElement('input');inp.type='hidden';inp.name=k;inp.value=v;frm.appendChild(inp);
+        });
+        document.body.appendChild(frm); frm.submit();
+        setTimeout(function(){try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}},8000);
+      }catch(e2){console.warn('RSVP fallback err:',e2);}
+    });
   }
 
   sav.style.display='none';
