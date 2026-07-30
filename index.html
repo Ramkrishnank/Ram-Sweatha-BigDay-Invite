@@ -665,15 +665,19 @@ async function submitRSVP(choice){
     _t:Date.now()  // cache-busting
   };
 
-  // ── Save via XMLHttpRequest — most compatible across iOS/Android/Desktop ──
+  // ── Save via sendBeacon (works on ALL mobile browsers — iOS/Android/Desktop) ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
     try{
-      const params=new URLSearchParams(data);
-      const url=SHEET_URL+'?'+params.toString();
-      // XHR approach — works reliably on all mobile browsers
-      const xhr=new XMLHttpRequest();
-      xhr.open('GET',url,true);
-      xhr.send();
+      const fd=new FormData();
+      Object.entries(data).forEach(([k,v])=>fd.append(k,v));
+      // sendBeacon bypasses CORS restrictions on mobile — designed for cross-origin sends
+      const sent = navigator.sendBeacon ? navigator.sendBeacon(SHEET_URL,fd) : false;
+      if(!sent){
+        // Fallback for very old browsers
+        const xhr=new XMLHttpRequest();
+        xhr.open('GET',SHEET_URL+'?'+new URLSearchParams(data).toString(),true);
+        xhr.send();
+      }
     }catch(e){console.warn('Sheet:',e);}
   }
 

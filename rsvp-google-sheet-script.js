@@ -59,38 +59,36 @@ function setup() {
   Logger.log('════════════════════════════════════════');
 }
 
-// ── Handle RSVP via GET (Image pixel + iframe, survives redirects) ─
+// ── Shared helper: save one RSVP row ───────────────────────────
+function saveRow_(p) {
+  const ss    = getSpreadsheet();
+  const sheet = ensureTab_(ss);
+  sheet.appendRow([
+    p.timestamp   || new Date().toLocaleString(),
+    p.name        || '',
+    p.phone       || '',
+    p.guests      || '',
+    p.events      || '',
+    p.attending   || '',
+    p.message     || '',
+    p.submittedAt || new Date().toISOString()
+  ]);
+  const row = sheet.getLastRow();
+  const att = (p.attending || '').toLowerCase();
+  if (att.indexOf('yes') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#e8f5e9');
+  else if (att.indexOf('no') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#fce4ec');
+}
+
+// ── doGet: handles XHR/Image GET requests from desktop ─────────
 function doGet(e) {
   if (e.parameter && e.parameter.name) {
     try {
-      const ss    = getSpreadsheet();
-      const sheet = ensureTab_(ss);
-      const p     = e.parameter;
-
-      sheet.appendRow([
-        p.timestamp   || new Date().toLocaleString(),
-        p.name        || '',
-        p.phone       || '',
-        p.guests      || '',
-        p.events      || '',
-        p.attending   || '',
-        p.message     || '',
-        p.submittedAt || new Date().toISOString()
-      ]);
-
-      const row = sheet.getLastRow();
-      const att = (p.attending || '').toLowerCase();
-      if (att.indexOf('yes') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#e8f5e9');
-      else if (att.indexOf('no') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#fce4ec');
-
-      // Return transparent 1x1 GIF so Image() pixel request completes
+      saveRow_(e.parameter);
       return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
     } catch (err) {
       return ContentService.createTextOutput('ERR:' + err.toString());
     }
   }
-
-  // No params — show sheet link
   const url = getSpreadsheet().getUrl();
   return HtmlService.createHtmlOutput(
     '<h2>Ram &amp; Sweatha RSVP is running! 🎉</h2>' +
@@ -98,28 +96,16 @@ function doGet(e) {
   );
 }
 
-// ── doPost kept as fallback ─────────────────────────────────────
+// ── doPost: handles sendBeacon FormData from mobile ────────────
 function doPost(e) {
   try {
-    const ss    = getSpreadsheet();
-    const sheet = ensureTab_(ss);
-    const p = e.parameter || {};
-    let data = p.name ? p : (p.payload ? JSON.parse(p.payload) : JSON.parse(e.postData.contents));
-
-    sheet.appendRow([
-      data.timestamp   || new Date().toLocaleString(),
-      data.name        || '',
-      data.phone       || '',
-      data.guests      || '',
-      data.events      || '',
-      data.attending   || '',
-      data.message     || '',
-      data.submittedAt || new Date().toISOString()
-    ]);
-
-    return json_({ status: 'success' });
+    // sendBeacon sends as multipart/form-data — read via e.parameter
+    const p = (e.parameter && e.parameter.name) ? e.parameter
+            : (e.postData ? JSON.parse(e.postData.contents) : {});
+    saveRow_(p);
+    return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
   } catch (err) {
-    return json_({ status: 'error', message: err.toString() });
+    return ContentService.createTextOutput('ERR:' + err.toString());
   }
 }
 
