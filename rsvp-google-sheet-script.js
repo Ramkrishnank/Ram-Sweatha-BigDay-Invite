@@ -79,11 +79,19 @@ function saveRow_(p) {
   else if (att.indexOf('no') > -1) sheet.getRange(row, 1, 1, 8).setBackground('#fce4ec');
 }
 
-// ── doGet: handles XHR/Image GET requests from desktop ─────────
+// ── doGet: handles all GET requests (XHR desktop + JSONP script tag for iOS) ──
 function doGet(e) {
   if (e.parameter && e.parameter.name) {
     try {
       saveRow_(e.parameter);
+      // JSONP: if callback param present, wrap response as JS function call
+      // This is called by <script> tag on iOS Safari — works around ITP + CORS
+      const cb = e.parameter.callback;
+      if (cb) {
+        return ContentService
+          .createTextOutput(cb + '({"status":"ok"})')
+          .setMimeType(ContentService.MimeType.JAVASCRIPT);
+      }
       return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
     } catch (err) {
       return ContentService.createTextOutput('ERR:' + err.toString());
@@ -96,10 +104,9 @@ function doGet(e) {
   );
 }
 
-// ── doPost: handles sendBeacon FormData from mobile ────────────
+// ── doPost: handles sendBeacon / form POST from mobile ─────────
 function doPost(e) {
   try {
-    // sendBeacon sends as multipart/form-data — read via e.parameter
     const p = (e.parameter && e.parameter.name) ? e.parameter
             : (e.postData ? JSON.parse(e.postData.contents) : {});
     saveRow_(p);
