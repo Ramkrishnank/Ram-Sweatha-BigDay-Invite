@@ -665,23 +665,17 @@ async function submitRSVP(choice){
     _t:Date.now()  // cache-busting
   };
 
-  // ── Save RSVP — try multiple methods for broad browser support ──
+  // ── Save RSVP — fetch GET no-cors works on ALL browsers incl. iOS Safari ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
+    const qs = new URLSearchParams(data).toString();
+    // fetch GET with no-cors: simple request, no preflight, CORS not enforced,
+    // works on iOS Safari / Android / Desktop — response is opaque (we don't need it)
     try{
-      const qs = new URLSearchParams(data).toString();
-      // sendBeacon with Blob (application/x-www-form-urlencoded) — doPost(e.parameter)
-      let sent = false;
-      if(navigator.sendBeacon){
-        const blob = new Blob([qs],{type:'application/x-www-form-urlencoded'});
-        sent = navigator.sendBeacon(SHEET_URL, blob);
-      }
-      // XHR GET fallback — doGet(e.parameter)
-      if(!sent){
-        const xhr=new XMLHttpRequest();
-        xhr.open('GET',SHEET_URL+'?'+qs,true);
-        xhr.send();
-      }
-    }catch(e){console.warn('Sheet:',e);}
+      fetch(SHEET_URL+'?'+qs, {mode:'no-cors', cache:'no-store'}).catch(function(){
+        // Last resort: XHR GET (old browsers)
+        try{var x=new XMLHttpRequest();x.open('GET',SHEET_URL+'?'+qs,true);x.send();}catch(e2){}
+      });
+    }catch(e){ try{var x=new XMLHttpRequest();x.open('GET',SHEET_URL+'?'+qs,true);x.send();}catch(e2){} }
   }
 
   sav.style.display='none';
