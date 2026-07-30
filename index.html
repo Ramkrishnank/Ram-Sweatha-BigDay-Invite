@@ -665,17 +665,25 @@ async function submitRSVP(choice){
     _t:Date.now()  // cache-busting
   };
 
-  // ── Save RSVP — fetch GET no-cors works on ALL browsers incl. iOS Safari ──
+  // ── Save RSVP via hidden form→iframe (follows 302 redirects, zero CORS, works on ALL browsers) ──
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
-    const qs = new URLSearchParams(data).toString();
-    // fetch GET with no-cors: simple request, no preflight, CORS not enforced,
-    // works on iOS Safari / Android / Desktop — response is opaque (we don't need it)
     try{
-      fetch(SHEET_URL+'?'+qs, {mode:'no-cors', cache:'no-store'}).catch(function(){
-        // Last resort: XHR GET (old browsers)
-        try{var x=new XMLHttpRequest();x.open('GET',SHEET_URL+'?'+qs,true);x.send();}catch(e2){}
+      const ifrName='rsvp_'+Date.now();
+      const ifr=document.createElement('iframe');
+      ifr.name=ifrName; ifr.style.display='none';
+      document.body.appendChild(ifr);
+      const frm=document.createElement('form');
+      frm.method='GET'; frm.action=SHEET_URL; frm.target=ifrName; frm.style.display='none';
+      Object.entries(data).forEach(function([k,v]){
+        const inp=document.createElement('input');
+        inp.type='hidden'; inp.name=k; inp.value=v; frm.appendChild(inp);
       });
-    }catch(e){ try{var x=new XMLHttpRequest();x.open('GET',SHEET_URL+'?'+qs,true);x.send();}catch(e2){} }
+      document.body.appendChild(frm);
+      frm.submit();
+      setTimeout(function(){
+        try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){}
+      },8000);
+    }catch(e){console.warn('RSVP err:',e);}
   }
 
   sav.style.display='none';
