@@ -538,8 +538,17 @@
 
 <script>
 // ═══════════════ CONFIG ═══════════════════════════════════════════
-// 👇 Paste your Google Apps Script URL here after setup
 const SHEET_URL  = 'https://script.google.com/macros/s/AKfycbw8kYanr7_Yx8uh06jVWgbqQoFQhtyCp0lkPvwEp4vEAN2hqbBDq90sTW9uoGO0M8Q39Q/exec';
+// Google Forms endpoint — works on ALL browsers incl. iOS Safari (no CORS/ITP issues)
+const GFORM_URL  = 'https://docs.google.com/forms/d/e/1FAIpQLScmZu5LWHBI-wC360SPsH5Gorv1zhrdZloiObHOME9pOs6EdQ/formResponse';
+const GFORM_FIELDS = {
+  name:     'entry.1767266451',
+  phone:    'entry.296051197',
+  guests:   'entry.2123503590',
+  events:   'entry.1701742572',
+  attending:'entry.1311073361',
+  message:  'entry.1792838491'
+};
 const WA_NUMBER  = '919876543210'; // Replace with real number
 const YT_ID      = 'nDeGKa1dh2w';  // YouTube BGM video ID
 const WED_DATE   = new Date('2026-10-30T06:00:00');
@@ -665,27 +674,20 @@ async function submitRSVP(choice){
     _t:Date.now()  // cache-busting
   };
 
-  // ── Save RSVP ─────────────────────────────────────────────────────────
-  // JSONP via <script> tag: NEVER blocked by iOS Safari ITP,
-  // follows 302 redirects automatically, zero CORS restrictions.
-  // Works on ALL browsers. XHR GET is kept as a parallel fallback.
+  // ── Save RSVP via Google Forms (docs.google.com — never blocked by iOS Safari ITP) ──
+  // Primary: fetch POST no-cors to Google Forms formResponse endpoint
+  // Google Forms accepts no-cors POST and saves to sheet — works on ALL browsers
+  const fd = new FormData();
+  fd.append(GFORM_FIELDS.name,      data.name);
+  fd.append(GFORM_FIELDS.phone,     data.phone);
+  fd.append(GFORM_FIELDS.guests,    data.guests);
+  fd.append(GFORM_FIELDS.events,    data.events);
+  fd.append(GFORM_FIELDS.attending, data.attending);
+  fd.append(GFORM_FIELDS.message,   data.message);
+  fetch(GFORM_URL, {method:'POST', mode:'no-cors', body:fd}).catch(function(){});
+  // Parallel fallback: Apps Script GET (desktop browsers)
   if(SHEET_URL!=='REPLACE_WITH_YOUR_APPS_SCRIPT_URL'){
-    const qs = new URLSearchParams(data).toString();
-    // PRIMARY: JSONP — iOS Safari safe
-    (function(){
-      const cbName='_rsvp'+Date.now();
-      window[cbName]=function(r){
-        try{delete window[cbName];}catch(e){}
-        try{document.head.removeChild(s);}catch(e){}
-      };
-      const s=document.createElement('script');
-      s.src=SHEET_URL+'?'+qs+'&callback='+cbName;
-      s.onerror=function(){try{delete window[cbName];document.head.removeChild(s);}catch(e){}};
-      document.head.appendChild(s);
-      setTimeout(function(){try{delete window[cbName];document.head.removeChild(s);}catch(e){}},12000);
-    })();
-    // PARALLEL FALLBACK: XHR GET (desktop browsers)
-    try{var x=new XMLHttpRequest();x.open('GET',SHEET_URL+'?'+qs,true);x.send();}catch(e){}
+    try{const qs=new URLSearchParams(data).toString();var x=new XMLHttpRequest();x.open('GET',SHEET_URL+'?'+qs,true);x.send();}catch(e){}
   }
 
   sav.style.display='none';
